@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ ! -f db/dump.rdb ]; then
+  curl -o db/dump.rdb http://sheerun.net/dump.rdb
+fi
+
+bin/bundle install
+bin/rake db:create
+bin/rake db:migrate

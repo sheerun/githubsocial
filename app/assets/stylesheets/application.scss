@@ -1,2 +1,26 @@
+//= require ./bootstrap
+//= require octicons
 //= require_self
-//= require_tree .
+
+body {
+  background-image: image-url('background.png');
+}
+
+.body-background {
+  z-index: -1;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  // background: #f9f9f9;
+  // background: linear-gradient(to right, #e7e7e7 0%, #f9f9f9 1%, #f9f9f9 99%, #e7e7e7 100%);
+  background: linear-gradient(to right, #f9f9f9, #f9f9f9);
+  background-repeat: repeat-y;
+  background-size: 800px 1px;
+  background-position: top center;
+}
+
+input[type="search"] {
+  -webkit-appearance: searchfield !important;
+}

@@ -1,9 +1,31 @@
-doctype
-html
+doctype html
+html lang="en" ng-app="gsocial"
   head
-    title Rails4Bootstrap
-    = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
-    = javascript_include_tag "application", "data-turbolinks-track" => true
+    meta charset="utf-8"
+    meta http-equiv="X-UA-Compatible" content="IE=edge"
+    meta name="viewport" content="width=device-width, initial-scale=1"
+    title GitHub Social
+    = stylesheet_link_tag "application", media: "all"
+    = javascript_include_tag "application", defer: true
     = csrf_meta_tags
+    = favicon_link_tag 'favicon.png'
   body
-    = yield
+    .body-background
+
+    nav.navbar.navbar-default.navbar-static-top role="navigation"
+      .container
+        a href="/"
+          .navbar-header: .navbar-brand style="vertical-align: middle"
+            img> src=image_path('logo.png') width="24" height="24" style="vertical-align: middle; padding: 0"
+            span style="vertical-align: middle"
+              strong GitHub
+              span Social
+        form.nav.navbar-form.navbar-right
+          .form-group
+            button.btn.btn-default type="submit" Login with Github
+
+    .container
+      div(ui-view)
+
+    script type="text/ng-template" id="/templates/index"
+      = render file: 'application/index'

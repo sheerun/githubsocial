@@ -9,66 +9,46 @@
 
 div ng-controller="SearchCtrl" ng-if="Rails.current_user"
   form
-    input.form-control type="search" placeholder="Search repositories..." ng-model="search.query" ng-change="searchRepos()"
-
-  div ng-if="search.results"
-    .panel.panel-default: .panel-body
-      .media ng-repeat="repo in search.results"
-        a.pull-left href="{{ repo.url }}" style="position: relative"
-          img.media-object ng-src="{{ repo.owner.avatar_url }}&size=128" width="64" height="64"
-        .media-body
-          .row
-            .col-xs-9 style="overflow: hidden"
-              a href="{{ repo.html_url }}"
-                h4.media-heading
-                  span ng-bind="repo.full_name"
-              p
-                span(
-                  style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
-                  title="{{ repo.description }}"
-                  ng-bind="repo.description"
-                )
-                span(
-                  style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
-                )
-                  span.octicon.octicon-star>
-                  span ng-bind="repo.stargazers_count"
-            .col-xs-3
-              a.btn.btn-sm.btn-success(
-                style="width: 100%; margin-top: 18px"
-                ui-sref="related({ owner: repo.owner.login, name: repo.name })"
-              )
-                | Select
+    input.form-control(
+      type="search"
+      placeholder="Search repositories..."
+      ng-model="repo"
+      typeahead="repo for results in searchRepos($viewValue)"
+      typeahead-wait-ms="200"
+      typeahead-editable="true"
+      typeahead-on-select="goToRelated($item)"
+    )
 
   div ng-if="related.subject"
 
-    .panel.panel-default: .panel-body
-      .media
-        a.pull-left href="{{ related.subject.html_url }}" style="position: relative"
-          img.media-object ng-src="{{ related.subject.owner.avatar_url }}&size=128" width="64" height="64"
-        .media-body
-          a href="{{ related.subject.owner.html_url }}"
+    .panel.panel-default style="margin-top: 3px;"
+      .panel-body
+        .media
+          img.pull-left.media-object ng-src="{{ related.subject.owner.avatar_url }}&size=128" width="64" height="64"
+          .media-body
             h4.media-heading
               span ng-bind="related.subject.full_name"
-          p
-            span(
-              ng-bind="related.subject.description"
-            )
+            p
+              span(
+                ng-bind="related.subject.description"
+              )
 
-    h2 Related repositories:
+  div.suggestions ng-if="related.subject"
+
+    h2 ng-if="related.results.length <= 0" No related repositories
+    h2 ng-if="related.results.length > 0" Related repositories:
+
     input> type="checkbox" ng-change="fetchRelated()" ng-model="related.excludeStarred"
     label Ignore already starred repositories
 
 
-    .media ng-repeat="repo in related.results"
-      a.pull-left href="{{ repo.url }}" style="position: relative"
-        img.media-object ng-src="{{ repo.owner.avatar_url }}&size=128" width="64" height="64"
+    .media ng-repeat="repo in related.results" style="cursor: pointer"
+      img.pull-left.media-object ng-src="{{ repo.owner.avatar_url }}&size=128" width="64" height="64"
       .media-body
         .row
-          .col-xs-9 style="overflow: hidden"
-            a href="{{ repo.html_url }}"
-              h4.media-heading
-                span ng-bind="repo.full_name"
+          .col-xs-9 style="overflow: hidden" ui-sref="related({ owner: repo.owner.login, name: repo.name })"
+            h4.media-heading
+              span ng-bind="repo.full_name"
             p
               span(
                 style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
@@ -81,8 +61,9 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user"
                 span.octicon.octicon-star>
                 span ng-bind="repo.stargazers_count"
           .col-xs-3
-            a.btn.btn-sm.btn-default(
+            a.btn.btn-sm.btn-success(
               style="width: 100%; margin-top: 18px"
-              ui-sref="related({ owner: repo.owner.login, name: repo.name })"
+              href="{{ repo.html_url }}"
+              target="_blank"
             )
-              | Select
+              | Open on GitHub

@@ -1,6 +1,8 @@
 App = angular.module('gsocial')
 
-App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams) ->
+App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams, $state) ->
+  $scope.enter = false
+
   $scope.search =
     query: ''
     results: []
@@ -10,14 +12,13 @@ App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams) ->
     subject: null
     excludeStarred: true
 
-  $scope.searchRepos = _.debounce ->
-
-    query = $scope.search.query
-
+  $scope.searchRepos = (query) ->
     $http.get("https://api.github.com/search/repositories?q=#{query}&per_page=5&access_token=#{Rails.current_user.github_token}", cache: true).then (response) ->
       $scope.search.results = response.data.items
+      $scope.search.results
 
-  , 500
+  $scope.goToRelated = (model) ->
+    $state.go('related', owner: model.owner.login, name: model.name)
 
   $scope.fetchRelated = ->
     params = {}

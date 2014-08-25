@@ -41,7 +41,37 @@ html lang="en" ng-app="gsocial"
           = alert
 
     .container ng-cloak=""
-      div(ui-view)
+      div(ui-view autoscroll="true")
 
     script type="text/ng-template" id="/templates/index"
       = render file: 'application/index'
+
+    script type="text/ng-template" id="template/typeahead/typeahead-popup.html"
+      .panel.panel-default.typeahead(ng-if="isOpen()")
+        .panel-body
+          .media(
+            ng-repeat="match in matches track by $index"
+            ng-class="{active: isActive($index) }"
+            ng-mouseenter="selectActive($index)"
+            ng-click="selectMatch($index)"
+            role="option"
+            style="position: relative;"
+          )
+            a.pull-left href="{{ match.model.url }}" style="position: relative"
+              img.media-object ng-src="{{ match.model.owner.avatar_url }}&size=128" width="64" height="64"
+            .media-body
+              h4.media-heading
+                span ng-bind="match.model.full_name"
+              p
+                span(
+                  style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
+                  title="{{ match.model.description }}"
+                  ng-bind="match.model.description"
+                )
+                span(
+                  style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
+                )
+                  span.octicon.octicon-star>
+                  span ng-bind="match.model.stargazers_count"
+
+    footer

@@ -38,7 +38,7 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user"
                 style="width: 100%; margin-top: 18px"
                 ui-sref="related({ owner: repo.owner.login, name: repo.name })"
               )
-                | Related &rarr;
+                | Select
 
   div
 
@@ -78,8 +78,8 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user"
                 span.octicon.octicon-star>
                 span ng-bind="repo.stargazers_count"
           .col-xs-3
-            a.btn.btn-sm.btn-success(
+            a.btn.btn-sm.btn-default(
               style="width: 100%; margin-top: 18px"
               ui-sref="related({ owner: repo.owner.login, name: repo.name })"
             )
-              | Related &rarr;
+              | Select

@@ -21,6 +21,5 @@ App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams) ->
   if $stateParams.owner && $stateParams.name
     $scope.repoName = "#{$stateParams.owner}/#{$stateParams.name}"
     $http.get("/api/#{$scope.repoName}/related", cache: true).then (response) ->
-      $scope.related.subject = response.data.shift()
-      $scope.related.results = response.data
-      $scope.search.results = []
+      $scope.related.subject = response.data.subject
+      $scope.related.results = response.data.related

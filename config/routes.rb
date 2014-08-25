@@ -16,6 +16,10 @@ Application.routes.draw do
     defaults: { status: '500' },
     via: :all
 
-  get '/:owner/:name/related' => 'application#index'
-  root 'application#index'
+  get '/:owner/:name/related' => 'application#index', constraints: {
+    name: /[^\/]+/,
+    owner: /[^\/]+/,
+  }
+
+ root 'application#index'
 end

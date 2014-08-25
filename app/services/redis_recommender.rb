@@ -75,7 +75,7 @@ class RedisRecommender
     raw_ratings = @redis.evalsha(
       @command,
       sets,
-      [@collection_prefix, size, min_connectivity, 5, 10]
+      [@collection_prefix, size, min_connectivity, 5, 25]
     )
 
     max_score = raw_ratings[1].to_f
@@ -88,7 +88,11 @@ class RedisRecommender
     repos_hash = {}
     repos.each do |repo|
       repos_hash[repo.id] = repo.as_json.merge(
-        'owner' => owners[repo['owner']].as_json
+        :owner => owners[repo['owner']].as_json ||  {
+            id: 0,
+            login: 'unknown',
+            avatar_url: 'https://avatars.githubusercontent.com/u/0?v=2'
+          }.as_json
       )
     end
 

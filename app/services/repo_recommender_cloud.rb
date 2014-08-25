@@ -13,9 +13,18 @@ class RepoRecommenderCloud
   end
 
   def recommend(repo_id, options = {})
+    subject = Repo.find_by(id: repo_id)
+
+    related = []
+
     benchmark "recommend" do
-      recommender_by_id(repo_id).recommend(repo_id, max_sample: 100)
+      related = recommender_by_id(repo_id).recommend(repo_id, max_sample: 100)
     end
+
+    {
+      subject: subject.as_json(extended: true),
+      related: related
+    }
   end
 
   def logger

@@ -30,8 +30,14 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user" style="position: relat
               span ng-bind="related.subject.full_name"
             p
               span(
+                style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
                 ng-bind="related.subject.description"
               )
+              span(
+                style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
+              )
+                span.octicon.octicon-star>
+                span ng-bind="related.subject.stargazers_count"
 
   div.suggestions ng-if="related.subject"
 
@@ -68,3 +74,6 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user" style="position: relat
               ui-sref="related({ owner: repo.owner.login, name: repo.name })"
             )
               | Show Related
+    footer
+      span> Created by
+      a href="http://sheerun.net" Adam Stankiewicz

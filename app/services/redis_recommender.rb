@@ -7,9 +7,9 @@ class RedisRecommender
     local collection_prefix = ARGV[1]
     local collection_size   = tonumber(ARGV[2])
     local min_connectivity  = tonumber(ARGV[3])
-    local max_matches       = tonumber(ARGV[5])
+    local max_matches       = tonumber(ARGV[4])
+    local related_cache     = ARGV[5]
 
-    redis.log(redis.LOG_NOTICE, min_connectivity)
 
     -- collect counts of stars on repos by users
     redis.call('del', 'tmp')
@@ -36,19 +36,15 @@ class RedisRecommender
       end
     end
 
-    redis.log(redis.LOG_NOTICE, j)
-
     for i=1,#new_items,5000 do
-      redis.call('zadd', 'tmp', unpack(new_items, i, math.min(i + 4999, #new_items)))
+      redis.call('zadd', related_cache, unpack(new_items, i, math.min(i + 4999, #new_items)))
     end
 
-    redis.log(redis.LOG_NOTICE, redis.call('zcard', 'tmp'))
+    redis.log(redis.LOG_NOTICE, min_connectivity, j, redis.call('zcard', related_cache))
 
-    local result = redis.call('zrevrange', 'tmp', 0, max_matches, 'withscores')
+    redis.call('zremrangebyrank', related_cache, 0, -max_matches)
 
-    redis.call('del', 'tmp')
-
-    return result
+    return redis.call('zrevrange', related_cache, 0, -1, 'withscores')
   """
 
   attr_accessor :redis
@@ -62,25 +58,35 @@ class RedisRecommender
     @contracollection_prefix = contracollection_prefix
   end
 
+  def cached_ratings(collection_id, options = {})
+    cache_key = "related:#{@collection_prefix}:#{collection_id}"
+
+    if @redis.exists(cache_key)
+      @redis.zrevrange(cache_key, 0, -1, withscores: true)
+    else
+      size = @redis.scard("#{@collection_prefix}:#{collection_id}")
+      min_connectivity = [2, options.fetch(:min_connectivity, (Math.sqrt(size) / 10).ceil)].max
+
+      max_sample = options.fetch(:max_sample, 250)
+      sets = @redis.srandmember("#{@collection_prefix}:#{collection_id}", max_sample).
+        map { |contracollection_id| "#{@contracollection_prefix}:#{contracollection_id}" }
+
+      @redis.evalsha(
+        @command,
+        sets,
+        [@collection_prefix, size, min_connectivity, 25, cache_key]
+      ).each_slice(2).to_a
+    end
+  end
+
   def recommend(collection_id, options = {})
     collection_id = collection_id.to_i
 
-    size = @redis.scard("#{@collection_prefix}:#{collection_id}")
-    min_connectivity = [2, options.fetch(:min_connectivity, (Math.sqrt(size) / 10).ceil)].max
+    raw_ratings = cached_ratings(collection_id, options)
 
-    max_sample = options.fetch(:max_sample, 250)
-    sets = @redis.srandmember("#{@collection_prefix}:#{collection_id}", max_sample).
-      map { |contracollection_id| "#{@contracollection_prefix}:#{contracollection_id}" }
+    max_score = raw_ratings[0][1].to_f
 
-    raw_ratings = @redis.evalsha(
-      @command,
-      sets,
-      [@collection_prefix, size, min_connectivity, 5, 25]
-    )
-
-    max_score = raw_ratings[1].to_f
-
-    repo_ids = raw_ratings.each_slice(2).map { |key, val| key.to_i }
+    repo_ids = raw_ratings.map { |key, val| key.to_i }
     repos = Repo.where(id: repo_ids).to_a
     owners_logins = repos.map { |r| r.owner }
     owners = User.where(login: owners_logins).to_a.index_by(&:login)
@@ -104,7 +110,7 @@ class RedisRecommender
       )
     end
 
-    raw_ratings.each_slice(2).flat_map do |key, val|
+    raw_ratings.flat_map do |key, val|
       key = key.to_i
 
       next [] if collection_id == key

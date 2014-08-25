@@ -4,6 +4,8 @@ class SessionsController < ActionController::Base
 
     session[:user_id] = @user.id
 
+    User::UpdateStarredJob.perform_async(@user.id)
+
     redirect_to '/'
   end
 

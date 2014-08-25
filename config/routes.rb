@@ -1,4 +1,6 @@
 Application.routes.draw do
+  root 'application#index'
+
   get '/auth/:provider/callback', to: 'sessions#create'
   get '/auth/failure', to: 'sessions#failure'
   get '/auth/logout', to: 'sessions#destroy'
@@ -11,15 +13,21 @@ Application.routes.draw do
 
   get '/api/*path' => 'api#not_found'
 
-  match '(errors)/:status', to: 'errors#show',
-    constraints: { status: /\d{3}/ },
-    defaults: { status: '500' },
-    via: :all
+  require 'sidekiq/web'
+  Sidekiq::Web.use(Rack::Auth::Basic) do |user, password|
+    [user, password] == [
+      "admin", ENV['SIDEKIQ_PASSWORD'] || "password"
+    ]
+  end
+  mount Sidekiq::Web => '/sidekiq'
 
   get '/:owner/:name/related' => 'application#index', constraints: {
     name: /[^\/]+/,
     owner: /[^\/]+/,
   }
 
- root 'application#index'
+  match '(errors)/:status', to: 'errors#show',
+    constraints: { status: /\d{3}/ },
+    defaults: { status: '500' },
+    via: :all
 end

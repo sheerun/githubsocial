@@ -1,6 +1,7 @@
-class ApiController < ActionController::Base
+class ApiController < ApplicationController
 
   def index
+    current_user.starred
     render json: JSON.pretty_generate(
       recommendation_url: '/api'
     )

@@ -8,6 +8,11 @@ gem 'figaro', '~> 0.7.0'
 gem 'dotenv-rails', '~> 0.11.1'
 gem 'yajl-ruby', '~> 1.2.0', :require => 'yajl/json_gem'
 gem 'omniauth-github'
+gem 'octokit'
+
+# Background tasks
+gem 'sinatra', '>= 1.3.0', :require => nil
+gem 'sidekiq'
 
 # Frontend
 gem 'sass-rails', '~> 4.0.0'

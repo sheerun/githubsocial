@@ -24,10 +24,11 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user" style="position: relat
     .panel.panel-default style="margin-top: 3px;"
       .panel-body
         .media
-          img.pull-left.media-object ng-src="{{ related.subject.owner.avatar_url }}&size=128" width="64" height="64"
+          a.pull-left ng-href="{{ related.subject.html_url }}"
+            img.media-object ng-src="{{ related.subject.owner.avatar_url }}&size=128" width="64" height="64"
           .media-body
             h4.media-heading
-              span ng-bind="related.subject.full_name"
+              a ng-href="{{ related.subject.html_url }}" ng-bind="related.subject.full_name"
             p
               span(
                 style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"

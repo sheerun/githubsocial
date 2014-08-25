@@ -92,7 +92,7 @@ class RedisRecommender
       )
     end
 
-    raw_ratings[2..-1].each_slice(2).map do |key, val|
+    raw_ratings.each_slice(2).map do |key, val|
       repos_hash[key.to_i].merge(
         similarity: (val.to_f / max_score * 100).round
       )

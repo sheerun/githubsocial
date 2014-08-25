@@ -9,27 +9,63 @@
 
 div ng-controller="SearchCtrl" ng-if="Rails.current_user"
   form
-    input.form-control type="search" placeholder="Search repository..." ng-model="search.query" ng-change="searchRepos()"
+    input.form-control type="search" placeholder="Search repositories..." ng-model="search.query" ng-change="searchRepos()"
 
   div ng-if="search.results"
+    .panel.panel-default: .panel-body
+      .media ng-repeat="repo in search.results"
+        a.pull-left href="{{ repo.url }}" style="position: relative"
+          img.media-object ng-src="{{ repo.owner.avatar_url }}&size=128" width="64" height="64"
+        .media-body
+          .row
+            .col-xs-9 style="overflow: hidden"
+              a href="{{ repo.html_url }}"
+                h4.media-heading
+                  span ng-bind="repo.full_name"
+              p
+                span(
+                  style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
+                  title="{{ repo.description }}"
+                  ng-bind="repo.description"
+                )
+                span(
+                  style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
+                )
+                  span.octicon.octicon-star>
+                  span ng-bind="repo.stargazers_count"
+            .col-xs-3
+              a.btn.btn-sm.btn-success(
+                style="width: 100%; margin-top: 18px"
+                ui-sref="related({ owner: repo.owner.login, name: repo.name })"
+              )
+                | Related &rarr;
 
-    h3 ng-if="!repoName" Search results
-    h3 ng-if="repoName"
-      span> Repositories related to
-      strong ng-bind="repoName"
-      span = ":"
+  div
 
-    .media ng-repeat="repo in search.results"
+    .panel.panel-default: .panel-body
+      .media
+        a.pull-left href="{{ related.subject.html_url }}" style="position: relative"
+          img.media-object ng-src="{{ related.subject.owner.avatar_url }}&size=128" width="64" height="64"
+        .media-body
+          a href="{{ related.subject.owner.html_url }}"
+            h4.media-heading
+              span ng-bind="related.subject.full_name"
+          p
+            span(
+              ng-bind="related.subject.description"
+            )
+
+    h2 Related repositories:
+
+    .media ng-repeat="repo in related.results"
       a.pull-left href="{{ repo.url }}" style="position: relative"
         img.media-object ng-src="{{ repo.owner.avatar_url }}&size=128" width="64" height="64"
       .media-body
         .row
           .col-xs-9 style="overflow: hidden"
-            a href="{{ repo.url }}"
+            a href="{{ repo.html_url }}"
               h4.media-heading
                 span ng-bind="repo.full_name"
-                span ng-if="repo.similarity"
-                  |  ({{ repo.similarity }}%)
             p
               span(
                 style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
@@ -46,4 +82,4 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user"
               style="width: 100%; margin-top: 18px"
               ui-sref="related({ owner: repo.owner.login, name: repo.name })"
             )
-              | Show Similar
+              | Related &rarr;

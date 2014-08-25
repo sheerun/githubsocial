@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require 'chunky_png'
+
+colors = [
+  '#6cdd58', '#d1828f', '#dcc494', '#d387e7', '#ceb760', '#e498cb',
+  '#98a0da', '#49a4da', '#d05581', '#e0b29c', '#a2d481', '#dbcf97',
+  '#8178e3', '#dcc055', '#c3da43', '#c3da43', '#d9a076', '#9fe284',
+  '#c373dc', '#95d6de', '#e6a18b', '#dc638c', '#dc638c', '#d16e87'
+]
+
+size = 10
+tiles = 12
+
+image = ChunkyPNG::Image.new(12*size, 12*size, ChunkyPNG::Color.from_hex('#f0f0f0'))
+favicon = ChunkyPNG::Image.new(32, 32, ChunkyPNG::Color.from_hex('#f0f0f0'))
+rand = Random.new(42)
+
+(1...(tiles - 1)).each do |x|
+  (1...(tiles - 1)).each do |y|
+    color = ChunkyPNG::Color.from_hex(colors.sample(random: rand))
+    image.rect(x*size, y*size, x*size+size-1, y*size+size-1, color, color)
+
+    if x.between?(3, (tiles - 4)) && y.between?(3, (tiles - 4))
+      favicon.rect((x-2)*4, (y - 2)*4, (x-2)*4+3, (y-2)*4+3, color, color)
+    end
+  end
+end
+
+dir = ::File.expand_path('../..',  __FILE__)
+image.save(File.join(dir, 'app/assets/images/logo.png'))
+favicon.save(File.join(dir, 'app/assets/images/favicon.png'))

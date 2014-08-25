@@ -7,7 +7,8 @@ class Repo < ActiveRecord::Base
       name: name,
       full_name: "#{owner}/#{name}",
       description: description,
-      stargazers_count: Redis.current.scard("stargazers:#{id}")
+      stargazers_count: Redis.current.scard("stargazers:#{id}"),
+      html_url: "https://github.com/#{owner}/#{name}"
     }
 
     if options[:extended]

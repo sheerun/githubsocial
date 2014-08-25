@@ -40,7 +40,7 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user"
               )
                 | Select
 
-  div
+  div ng-if="related.subject"
 
     .panel.panel-default: .panel-body
       .media
@@ -56,6 +56,9 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user"
             )
 
     h2 Related repositories:
+    input> type="checkbox" ng-change="fetchRelated()" ng-model="related.excludeStarred"
+    label Ignore already starred repositories
+
 
     .media ng-repeat="repo in related.results"
       a.pull-left href="{{ repo.url }}" style="position: relative"

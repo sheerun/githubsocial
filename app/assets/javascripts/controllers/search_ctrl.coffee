@@ -8,6 +8,7 @@ App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams) ->
   $scope.related =
     results: []
     subject: null
+    excludeStarred: true
 
   $scope.searchRepos = _.debounce ->
 
@@ -18,8 +19,16 @@ App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams) ->
 
   , 500
 
-  if $stateParams.owner && $stateParams.name
+  $scope.fetchRelated = ->
+    params = {}
+
+    if $scope.related.excludeStarred
+      params.user_id = Rails.current_user.id
+
     $scope.repoName = "#{$stateParams.owner}/#{$stateParams.name}"
-    $http.get("/api/#{$scope.repoName}/related", cache: true).then (response) ->
+    $http.get("/api/#{$scope.repoName}/related", params: params, cache: true).then (response) ->
       $scope.related.subject = response.data.subject
       $scope.related.results = response.data.related
+
+  if $stateParams.owner && $stateParams.name
+    $scope.fetchRelated()

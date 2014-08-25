@@ -12,13 +12,11 @@ class RepoRecommenderCloud
     RedisRecommender.new(slave, "stargazers", "starred")
   end
 
-  def recommend(repo_id, options = {})
-    subject = Repo.find_by(id: repo_id)
-
+  def recommend(subject, options = {})
     related = []
 
     benchmark "recommend" do
-      related = recommender_by_id(repo_id).recommend(repo_id, max_sample: 100)
+      related = recommender_by_id(subject.id).recommend(subject.id, options)
     end
 
     {

@@ -63,12 +63,12 @@ class RedisRecommender
   end
 
   def recommend(collection_id, options = {})
-    collection_id = collection_id.to_s
+    collection_id = collection_id.to_i
 
     size = @redis.scard("#{@collection_prefix}:#{collection_id}")
     min_connectivity = [2, options.fetch(:min_connectivity, (Math.sqrt(size) / 10).ceil)].max
 
-    max_sample = options.fetch(:max_sample, 1000)
+    max_sample = options.fetch(:max_sample, 250)
     sets = @redis.srandmember("#{@collection_prefix}:#{collection_id}", max_sample).
       map { |contracollection_id| "#{@contracollection_prefix}:#{contracollection_id}" }
 
@@ -89,17 +89,30 @@ class RedisRecommender
     repos.each do |repo|
       repos_hash[repo.id] = repo.as_json.merge(
         :owner => owners[repo['owner']].as_json ||  {
-            id: 0,
-            login: 'unknown',
-            avatar_url: 'https://avatars.githubusercontent.com/u/0?v=2'
-          }.as_json
+          id: 0,
+          login: 'unknown',
+          avatar_url: 'https://avatars.githubusercontent.com/u/0?v=2'
+        }.as_json
       )
     end
 
-    raw_ratings.each_slice(2).map do |key, val|
-      repos_hash[key.to_i].merge(
-        similarity: (val.to_f / max_score * 100).round
+    to_skip = []
+
+    if options[:user_id]
+      to_skip = Set.new(
+        @redis.smembers("starred:#{options[:user_id]}").map!(&:to_i)
       )
+    end
+
+    raw_ratings.each_slice(2).flat_map do |key, val|
+      key = key.to_i
+
+      next [] if collection_id == key
+      next [] if to_skip.include?(key)
+
+      [repos_hash[key].merge(
+        similarity: (val.to_f / max_score * 100).round
+      )]
     end
   end
 end

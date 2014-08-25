@@ -33,6 +33,9 @@ gem 'hiredis', '~> 0.4.5'
 gem 'redis', '~> 3.1.0'
 gem 'upsert'
 
+# Error logging
+gem "sentry-raven"
+
 group :development do
   gem 'awesome_print'
   gem 'better_errors', :platform => :ruby

@@ -61,9 +61,12 @@ GEM
       dotenv (= 0.11.1)
     erubis (2.7.0)
     execjs (2.2.1)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
+    hashie (3.2.0)
     hike (1.2.3)
     hiredis (0.4.5)
     i18n (0.6.11)
@@ -75,6 +78,7 @@ GEM
     mime-types (1.25.1)
     minitest (5.4.0)
     multi_json (1.10.1)
+    multipart-post (2.0.0)
     ngmin-rails (0.4.0)
       rails (>= 3.1)
     octicons-rails (2.1.0)
@@ -149,6 +153,10 @@ GEM
       sass (~> 3.2.0)
       sprockets (~> 2.8, <= 2.11.0)
       sprockets-rails (~> 2.0)
+    sentry-raven (0.9.4)
+      faraday (>= 0.7.6)
+      hashie (>= 1.1.0)
+      uuidtools
     slim (2.0.3)
       temple (~> 0.6.6)
       tilt (>= 1.3.3, < 2.1)
@@ -180,6 +188,7 @@ GEM
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     upsert (2.0.3)
+    uuidtools (2.1.5)
     yajl-ruby (1.2.1)
     yard (0.8.7.4)
 
@@ -215,6 +224,7 @@ DEPENDENCIES
   redis (~> 3.1.0)
   rspec-rails (~> 3.0)
   sass-rails (~> 4.0.0)
+  sentry-raven
   slim-rails (~> 2.0)
   uglifier (~> 2.4)
   upsert

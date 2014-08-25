@@ -16,5 +16,6 @@ Application.routes.draw do
     defaults: { status: '500' },
     via: :all
 
+  get '/:owner/:name/related' => 'application#index'
   root 'application#index'
 end

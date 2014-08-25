@@ -14,7 +14,7 @@ class RepoRecommenderCloud
 
   def recommend(repo_id, options = {})
     benchmark "recommend" do
-      recommender_by_id(repo_id).recommend(repo_id, max_sample: 1000)
+      recommender_by_id(repo_id).recommend(repo_id, max_sample: 100)
     end
   end
 

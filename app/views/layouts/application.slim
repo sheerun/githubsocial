@@ -30,10 +30,10 @@ html lang="en" ng-app="gsocial"
           ) Login with GitHub
 
         .nav.navbar-form.navbar-right ng-cloak="" ng-if="Rails.current_user"
-          a.btn.btn-default.btn-sm href="/auth/logout" style="margin-top: 2px" ng-click="githubLogout()"
-            span> Hello,
-            strong> ng-bind="Rails.current_user.login" style="vertical-align: middle; padding: 0"
-            span.octicon.octicon-sign-out style="vertical-align: middle; padding: 0; margin-left: 3px;"
+          span> style="vertical-align: middle; padding-right: 8px;"
+            | Hello, {{ Rails.current_user.login }}
+          a.btn.btn-default.btn-sm href="/auth/logout" style="margin-top: 2px;" ng-click="githubLogout()"
+            span.octicon.octicon-sign-out style="vertical-align: middle; padding: 0; margin-left: 3px; cursor: pointer"
 
     - if flash[:alert]
       .container

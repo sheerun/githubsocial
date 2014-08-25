@@ -6,6 +6,7 @@ html lang="en" ng-app="gsocial"
     meta name="viewport" content="width=device-width, initial-scale=1"
     title GitHub Social
     = stylesheet_link_tag "application", media: "all"
+    = application_metadata
     = javascript_include_tag "application", defer: true
     = csrf_meta_tags
     = favicon_link_tag 'favicon.png'
@@ -20,11 +21,26 @@ html lang="en" ng-app="gsocial"
             span style="vertical-align: middle"
               strong GitHub
               span Social
-        form.nav.navbar-form.navbar-right
-          .form-group
-            button.btn.btn-default type="submit" Login with Github
+        .nav.navbar-form.navbar-right ng-cloak="" ng-if="!Rails.current_user"
+          a.btn.btn-sm.btn-default(
+            
+            type="button"
+            style="margin-top: 4px"
+            ng-click="githubLogin()"
+          ) Login with GitHub
 
-    .container
+        .nav.navbar-form.navbar-right ng-cloak="" ng-if="Rails.current_user"
+          a.btn.btn-default.btn-sm href="/auth/logout" style="margin-top: 2px" ng-click="githubLogout()"
+            span> Hello,
+            strong> ng-bind="Rails.current_user.login" style="vertical-align: middle; padding: 0"
+            span.octicon.octicon-sign-out style="vertical-align: middle; padding: 0; margin-left: 3px;"
+
+    - if flash[:alert]
+      .container
+        .alert.alert-danger
+          = alert
+
+    .container ng-cloak=""
       div(ui-view)
 
     script type="text/ng-template" id="/templates/index"

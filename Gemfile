@@ -7,6 +7,7 @@ gem 'pg', '~> 0.17.1'
 gem 'figaro', '~> 0.7.0'
 gem 'dotenv-rails', '~> 0.11.1'
 gem 'yajl-ruby', '~> 1.2.0', :require => 'yajl/json_gem'
+gem 'omniauth-github'
 
 # Frontend
 gem 'sass-rails', '~> 4.0.0'

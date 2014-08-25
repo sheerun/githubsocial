@@ -1,4 +1,8 @@
 Application.routes.draw do
+  get '/auth/:provider/callback', to: 'sessions#create'
+  get '/auth/failure', to: 'sessions#failure'
+  get '/auth/logout', to: 'sessions#destroy'
+
   get '/api' => 'api#index'
   get '/api/:owner/:name/related' => 'api#related_repos', constraints: {
     name: /[^\/]+/,
@@ -13,5 +17,4 @@ Application.routes.draw do
     via: :all
 
   root 'application#index'
-  get '/*path' => 'application#index'
 end

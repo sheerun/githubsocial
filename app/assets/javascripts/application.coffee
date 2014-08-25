@@ -29,4 +29,21 @@ App.config ($stateProvider, $locationProvider) ->
 
   $locationProvider.html5Mode(true)
 
-App.config ($githubProvider) ->
+App.run ($rootScope, $window) ->
+  $rootScope.githubLogin = ->
+    $window.location.assign('/auth/github')
+
+  $rootScope.githubLogout = ->
+    $window.location.assign('/auth/logout')
+
+App.constant('Rails', window.Rails)
+
+App.config ($githubProvider, Rails) ->
+  if Rails.current_user
+    $githubProvider.token(Rails.current_user.github_token)
+    $githubProvider.authType('basic')
+
+App.run ($rootScope, Rails) ->
+  $rootScope.Rails = Rails
+  $rootScope.alert = (message) ->
+    alert(message)

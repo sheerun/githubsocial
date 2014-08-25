@@ -1,6 +1,6 @@
 App = angular.module('gsocial')
 
-App.controller 'SearchCtrl', ($scope, $github, $http, $stateParams) ->
+App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams) ->
   $scope.search =
     query: ''
     results: []
@@ -9,7 +9,7 @@ App.controller 'SearchCtrl', ($scope, $github, $http, $stateParams) ->
 
     query = $scope.search.query
 
-    $http.get("https://api.github.com/search/repositories?q=#{query}&per_page=10", cache: true).then (response) ->
+    $http.get("https://api.github.com/search/repositories?q=#{query}&per_page=10&access_token=#{Rails.current_user.github_token}", cache: true).then (response) ->
       $scope.search.results = response.data.items
 
   , 500

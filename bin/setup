@@ -1,7 +1,19 @@
 #!/bin/bash
 
+set -e
+
 if [ ! -f db/dump.rdb ]; then
+  echo "Downloading redis recommendation database..."
   curl -o db/dump.rdb http://sheerun.net/dump.rdb
+fi
+
+
+if [ ! -f bin/redis-server ]; then
+  echo "Compiling redis..."
+  (cd vendor/redis && make distclean && make 32bit)
+
+  cp vendor/redis/src/redis-server bin/redis-server
+  cp vendor/redis/src/redis-cli bin/redis-cli
 fi
 
 bin/bundle install

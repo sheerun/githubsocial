@@ -23,7 +23,6 @@ html lang="en" ng-app="gsocial"
               span Social
         .nav.navbar-form.navbar-right ng-cloak="" ng-if="!Rails.current_user"
           a.btn.btn-sm.btn-default(
-            
             type="button"
             style="margin-top: 4px"
             ng-click="githubLogin()"
@@ -51,21 +50,19 @@ html lang="en" ng-app="gsocial"
         .panel-body
           .media(
             ng-repeat="match in matches track by $index"
-            ng-class="{active: isActive($index) }"
+            ng-class="{active: isActive($index), inactive: !isActive($index) }"
             ng-mouseenter="selectActive($index)"
             ng-click="selectMatch($index)"
             role="option"
             style="position: relative;"
           )
-            a.pull-left href="{{ match.model.url }}" style="position: relative"
-              img.media-object ng-src="{{ match.model.owner.avatar_url }}&size=128" width="64" height="64"
+            img.media-object.pull-left ng-src="{{ match.model.owner.avatar_url }}&size=128" width="64" height="64"
             .media-body
               h4.media-heading
                 span ng-bind="match.model.full_name"
               p
                 span(
                   style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
-                  title="{{ match.model.description }}"
                   ng-bind="match.model.description"
                 )
                 span(
@@ -73,5 +70,4 @@ html lang="en" ng-app="gsocial"
                 )
                   span.octicon.octicon-star>
                   span ng-bind="match.model.stargazers_count"
-
     footer

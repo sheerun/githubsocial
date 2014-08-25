@@ -7,7 +7,7 @@
   p
     | Collaborative repository recommendations based on GitHub stars.
 
-div ng-controller="SearchCtrl" ng-if="Rails.current_user"
+div ng-controller="SearchCtrl" ng-if="Rails.current_user" style="position: relative"
   form
     input.form-control(
       type="search"
@@ -42,13 +42,15 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user"
     label Ignore already starred repositories
 
 
-    .media ng-repeat="repo in related.results" style="cursor: pointer"
-      img.pull-left.media-object ng-src="{{ repo.owner.avatar_url }}&size=128" width="64" height="64"
+    .media ng-repeat="repo in related.results"
+      a.pull-left ng-href="{{ repo.html_url }}"
+        img.media-object ng-src="{{ repo.owner.avatar_url }}&size=128" width="64" height="64"
+
       .media-body
         .row
-          .col-xs-9 style="overflow: hidden" ui-sref="related({ owner: repo.owner.login, name: repo.name })"
+          .col-xs-9 style="overflow: hidden"
             h4.media-heading
-              span ng-bind="repo.full_name"
+              a ng-href="{{ repo.html_url }}" ng-bind="repo.full_name"
             p
               span(
                 style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
@@ -63,7 +65,6 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user"
           .col-xs-3
             a.btn.btn-sm.btn-success(
               style="width: 100%; margin-top: 18px"
-              href="{{ repo.html_url }}"
-              target="_blank"
+              ui-sref="related({ owner: repo.owner.login, name: repo.name })"
             )
-              | Open on GitHub
+              | Show Related

@@ -266,6 +266,7 @@ DEPENDENCIES
   rails-assets-angular-ui-select
   rails-assets-lodash
   rails-assets-sheerun--angular-github-adapter
+  rake
   redis (~> 3.1.0)
   rspec-rails (~> 3.0)
   sass-rails (~> 4.0.0)

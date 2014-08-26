@@ -9,6 +9,7 @@ gem 'dotenv-rails', '~> 0.11.1'
 gem 'yajl-ruby', '~> 1.2.0', :require => 'yajl/json_gem'
 gem 'omniauth-github'
 gem 'octokit'
+gem 'rake'
 
 # Background tasks
 gem 'sinatra', '>= 1.3.0', :require => nil

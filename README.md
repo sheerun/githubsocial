@@ -1,4 +1,4 @@
-# GithubSocial [![Dependency Status][gemnasium-img-url]][gemnasium-url] [![Code Climate][codeclimate-img-url]][codeclimate-url] [![Build Status][travis-img-url]][travis-url]
+# ![favicon](http://githubsocial.com/favicon.png) GithubSocial [![Dependency Status][gemnasium-img-url]][gemnasium-url] [![Code Climate][codeclimate-img-url]][codeclimate-url] [![Build Status][travis-img-url]][travis-url]
 
 [codeclimate-img-url]: https://codeclimate.com/github/sheerun/githubsocial/badges/gpa.svg
 [codeclimate-url]: https://codeclimate.com/github/sheerun/githubsocial

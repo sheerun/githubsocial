@@ -14,6 +14,8 @@ gem 'rake'
 # Background tasks
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'sidekiq'
+gem 'sidekiq-benchmark'
+gem 'sidekiq-failures'
 
 # Frontend
 gem 'sass-rails', '~> 4.0.0'

@@ -1,25 +1,23 @@
 class RedisRecommender
   SCRIPT = """
-    redis.log(redis.LOG_NOTICE, '')
-
-    redis.log(redis.LOG_NOTICE, #KEYS)
-
     local collection_prefix = ARGV[1]
     local collection_size   = tonumber(ARGV[2])
     local min_connectivity  = tonumber(ARGV[3])
     local max_matches       = tonumber(ARGV[4])
     local related_cache     = ARGV[5]
 
-
     -- collect counts of stars on repos by users
     redis.call('del', 'tmp')
-    redis.call('zunionstore', 'tmp', #KEYS, unpack(KEYS))
+
+    for i=1,#KEYS,5000 do
+      redis.call('zunionstore', 'tmp', math.min(i + 4999, #KEYS) - i + 1, unpack(KEYS, i, math.min(i + 4999, #KEYS)))
+    end
+
     redis.call('zremrangebyscore', 'tmp', '-inf', min_connectivity - 1)
     local items = redis.call('zrevrange', 'tmp', 0, -1, 'withscores')
-    redis.log(redis.LOG_NOTICE, redis.call('zcard', 'tmp'))
     redis.call('del', 'tmp')
 
-    local min_similarity = 0.1
+    local min_similarity = 0.05
     local threshold = items[2] / (2 * collection_size) * min_similarity
 
     -- penalize with Soensen–Dice coefficient
@@ -36,13 +34,15 @@ class RedisRecommender
       end
     end
 
+    redis.call('del', related_cache)
+
     for i=1,#new_items,5000 do
       redis.call('zadd', related_cache, unpack(new_items, i, math.min(i + 4999, #new_items)))
     end
 
-    redis.log(redis.LOG_NOTICE, min_connectivity, j, redis.call('zcard', related_cache))
-
     redis.call('zremrangebyrank', related_cache, 0, -max_matches)
+
+    redis.call('del', 'tmp') -- in case related_cache is tmp
 
     return redis.call('zrevrange', related_cache, 0, -1, 'withscores')
   """
@@ -61,13 +61,13 @@ class RedisRecommender
   def cached_ratings(collection_id, options = {})
     cache_key = "related:#{@collection_prefix}:#{collection_id}"
 
-    if @redis.exists(cache_key)
+    if @redis.exists(cache_key) && !options[:force]
       @redis.zrevrange(cache_key, 0, -1, withscores: true)
     else
       size = @redis.scard("#{@collection_prefix}:#{collection_id}")
       min_connectivity = [2, options.fetch(:min_connectivity, (Math.sqrt(size) / 10).ceil)].max
 
-      max_sample = options.fetch(:max_sample, 250)
+      max_sample = options.fetch(:max_sample, 100)
       sets = @redis.srandmember("#{@collection_prefix}:#{collection_id}", max_sample).
         map { |contracollection_id| "#{@contracollection_prefix}:#{contracollection_id}" }
 

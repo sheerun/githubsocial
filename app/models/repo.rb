@@ -1,5 +1,26 @@
 class Repo < ActiveRecord::Base
 
+  # Perform very accurate recommendation in background
+  # To achieve it use user sample of 5000 instead usual 100
+  class CacheRelatedJob
+    include Sidekiq::Worker
+    include Sidekiq::Benchmark::Worker
+
+    sidekiq_options :retry => false
+
+    def perform(id)
+      benchmark do |bm|
+        repo = Repo.find(id)
+
+        raise "Unknown repository" unless repo
+
+        bm.recommend do
+          RepoRecommenderCloud.instance.recommend(repo, max_sample: 5000, force: true)
+        end
+      end
+    end
+  end
+
   def as_json(options = {})
     hash = {
       id: id,

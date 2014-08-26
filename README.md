@@ -7,7 +7,17 @@
 [travis-img-url]: https://travis-ci.org/sheerun/githubsocial.svg
 [travis-url]: https://travis-ci-org/sheerun/githubsocial
 
-Collaborative repository recommendations based on GitHub stars.
+Real-time collaborative repository recommendations based on GitHub stars.
+
+## What?
+
+Application is using information about starred repositories on GitHub, to produce clever and quick recommendation of what to like next. It recognizes collective trends by analysing hundreds of thousands of stars per recommendation.
+
+Application is using offline data updated in real-time from [GitHub API](https://developer.github.com/v3/). Seed data has been extracted from [Github Archive](http://www.githubarchive.org/), and [GH Torrent](http://ghtorrent.org/) websites. Specifically:
+
+- List of GitHub Repositories (stored in Postgres)
+- List of GitHub Users (stored in Postgres)
+- List of starred Repositories of each User (stored in Redis)
 
 ## Requirements
 

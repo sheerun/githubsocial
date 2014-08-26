@@ -19,6 +19,26 @@ Application is using offline data updated in real-time from [GitHub API](https:/
 - List of GitHub Users (stored in Postgres)
 - List of starred Repositories of each User (stored in Redis)
 
+## Used algorithm
+
+Application is using Memory-based, Item-based [Collaborative Filtering](https://en.wikipedia.org/wiki/Collaborative_filtering) algorithm using optimized [Sørensen–Dice coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient) for detecting similarity between any two repositories.
+
+The algorithm is inspired by [predictor](https://github.com/Pathgather/predictor), with few important differences, among others:
+
+- Similarities are computed collectively using [zunionstore](https://github.com/sheerun/githubsocial/blob/071be96a96da005a3c4b548c52cc03f81524f777/app/services/redis_recommender.rb#L13) redis command, instead of computing intersection between given repository and all repositories related to it.
+- Similarities are computed and cached using [Lua Script](https://github.com/sheerun/githubsocial/blob/071be96a96da005a3c4b548c52cc03f81524f777/app/services/redis_recommender.rb#L2) executed directly in Redis instance.
+- Performing computations on sets of integers instead set of strings, gaining on [Redis optimizations](http://redis.io/topics/memory-optimization). Redis is used in 32bit mode and with increased shared integer pool to improve memory usage.
+- For repositories with thousand stars, a representative sample of 100-5000 users is taken for computing live recommendations in <0.1s. Full recommendations are computed in background worker to improve users' experience.
+
+Such changes:
+
+- allow for real-time recommendations, even with constantly refreshing database data
+- reduce memory footprint needed to 850 MB per redis instance (only one is needed)
+
+## Want to know more?
+
+Ping me on [twitter](http://twitter.com/sheerun), or read the source.
+
 ## Requirements
 
 - Ruby 2.1.0

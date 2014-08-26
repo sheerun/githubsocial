@@ -27,7 +27,7 @@ Collaborative repository recommendations based on GitHub stars.
 
 Application requires Redis and PostgreSQL database dumps. They can be downloaded using `bin/download` script. Please download only if you really need to test live data.
 
-```ruby
+```bash
 bin/download
 # db/dump.rdb (Redis)
 # db/dump.sql.gz (PostgreSQL)
@@ -46,7 +46,7 @@ make 32bit
 
 After your redis instance is up and running with downloaded `dump.rdb`, and PostgreSQL with imported `dump.sql.gz`, you can bundle application:
 
-```
+```ruby
 bundle install
 bin/rake db:create
 bin/rake db:migrate
@@ -67,7 +67,7 @@ GITHUB_SECRET=yyy
 
 Application and sidekiq worker can be started with:
 
-```
+```bash
 bin/foreman start
 ```
 

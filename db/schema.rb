@@ -30,13 +30,10 @@ ActiveRecord::Schema.define(version: 20140825110120) do
     t.integer  "open_issues"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "full_name",        limit: 1023
+    t.string   "full_name"
   end
 
   add_index "repos", ["full_name"], name: "index_repos_on_full_name", unique: true, using: :btree
-  add_index "repos", ["full_name"], name: "repos_full_name_idx", using: :btree
-  add_index "repos", ["name"], name: "repos_name_idx", using: :btree
-  add_index "repos", ["owner"], name: "repos_owner_idx", using: :btree
 
   create_table "users", force: true do |t|
     t.datetime "created_at"

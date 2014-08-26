@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+if [ ! -f db/dump.rdb ]; then
+  echo "Downloading redis database to db/dump.rdb..."
+  curl -o db/dump.rdb http://sheerun.net/dump.rdb
+fi
+
+if [ ! -f db/dump.sql.gz ]; then
+  echo "Downloading postgresql database to db/dump.sql.gz"
+  curl -o db/dump.sql.gz http://sheerun.net/dump.sql.gz
+fi
+
+echo "All right :)"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140825110120) do
+ActiveRecord::Schema.define(version: 20140826043424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20140825110120) do
   end
 
   add_index "repos", ["full_name"], name: "index_repos_on_full_name", unique: true, using: :btree
+  add_index "repos", ["stargazers_count"], name: "index_repos_on_stargazers_count", using: :btree
 
   create_table "users", force: true do |t|
     t.datetime "created_at"

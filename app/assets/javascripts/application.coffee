@@ -21,20 +21,26 @@ App = angular.module 'gsocial', [
 App.config ($stateProvider, $locationProvider) ->
   $stateProvider.state 'index',
     url: "/"
+    controller: 'SearchCtrl'
     templateUrl: "/templates/index"
 
   $stateProvider.state 'related',
     url: "/:owner/:name/related"
+    controller: 'SearchCtrl'
     templateUrl: "/templates/index"
 
   $locationProvider.html5Mode(true)
 
-App.run ($rootScope, $window) ->
+App.run ($rootScope, $window, $http) ->
   $rootScope.githubLogin = ->
     $window.location.assign('/auth/github')
 
   $rootScope.githubLogout = ->
     $window.location.assign('/auth/logout')
+
+  $rootScope.scrollTop = ->
+    $window.scrollTo(0, 0)
+
 
 App.constant('Rails', window.Rails)
 

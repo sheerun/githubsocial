@@ -6,6 +6,7 @@ Application.routes.draw do
   get '/auth/logout', to: 'sessions#destroy'
 
   get '/api' => 'api#index'
+  get '/api/default_repos' => 'api#default_repos'
   get '/api/:owner/:name/related' => 'api#related_repos', constraints: {
     name: /[^\/]+/,
     owner: /[^\/]+/,

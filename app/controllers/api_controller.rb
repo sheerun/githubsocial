@@ -1,7 +1,6 @@
 class ApiController < ApplicationController
 
   def index
-    current_user.starred
     render json: JSON.pretty_generate(
       recommendation_url: '/api'
     )
@@ -12,7 +11,6 @@ class ApiController < ApplicationController
     user_id = params[:user_id] ? params[:user_id].to_i : nil
 
     if repo.present?
-      recommender = RepoRecommenderCloud.instance
       recommended = recommender.recommend(repo, user_id: user_id)
       render json: JSON.pretty_generate(recommended)
     else
@@ -24,6 +22,12 @@ class ApiController < ApplicationController
     render json: JSON.pretty_generate(
       message: 'Not Found'
     )
+  end
+
+  private
+
+  def recommender
+    RepoRecommenderCloud.instance
   end
 
 end

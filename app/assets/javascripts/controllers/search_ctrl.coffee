@@ -1,19 +1,21 @@
 App = angular.module('gsocial')
 
 App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams, $state) ->
-  $scope.enter = false
-
   $scope.search =
     query: ''
     results: []
 
   $scope.related =
+    enabled: false
     results: []
     subject: null
-    excludeStarred: true
+    excludeStarred: Rails.current_user?
 
   $scope.searchRepos = (query) ->
-    $http.get("https://api.github.com/search/repositories?q=#{query}&per_page=5&access_token=#{Rails.current_user.github_token}", cache: true).then (response) ->
+    url = "https://api.github.com/search/repositories?" +
+          "q=#{query}&per_page=5&access_token=#{Rails.current_user.github_token}"
+
+    $http.get(url, cache: true).then (response) ->
       $scope.search.results = response.data.items
       $scope.search.results
 
@@ -23,7 +25,7 @@ App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams, $stat
   $scope.fetchRelated = ->
     params = {}
 
-    if $scope.related.excludeStarred
+    if $scope.related.excludeStarred && Rails.current_user?
       params.user_id = Rails.current_user.id
 
     $scope.repoName = "#{$stateParams.owner}/#{$stateParams.name}"
@@ -32,4 +34,5 @@ App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams, $stat
       $scope.related.results = response.data.related
 
   if $stateParams.owner && $stateParams.name
+    $scope.related.enabled = true
     $scope.fetchRelated()

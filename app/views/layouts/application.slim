@@ -10,12 +10,12 @@ html lang="en" ng-app="gsocial"
     = javascript_include_tag "application", defer: true
     = csrf_meta_tags
     = favicon_link_tag 'favicon.png'
-  body
+  body id="#body"
     .body-background
 
     nav.navbar.navbar-default.navbar-static-top role="navigation"
       .container
-        a href="/"
+        a href="/" ng-click="scrollTop()"
           .navbar-header: .navbar-brand style="vertical-align: middle"
             img> src=image_path('logo.png') width="24" height="24" style="vertical-align: middle; padding: 0"
             span style="vertical-align: middle"
@@ -26,7 +26,7 @@ html lang="en" ng-app="gsocial"
             type="button"
             style="margin-top: 4px"
             ng-click="githubLogin()"
-          ) Login with GitHub
+          ) Login for Extra Powers
 
         .nav.navbar-form.navbar-right ng-cloak="" ng-if="Rails.current_user"
           span> style="vertical-align: middle; padding-right: 8px;"
@@ -40,7 +40,7 @@ html lang="en" ng-app="gsocial"
           = alert
 
     .container ng-cloak=""
-      div(ui-view autoscroll="true")
+      div(ui-view)
 
     script type="text/ng-template" id="/templates/index"
       = render file: 'application/index'
@@ -70,3 +70,30 @@ html lang="en" ng-app="gsocial"
                 )
                   span.octicon.octicon-star>
                   span ng-bind="match.model.stargazers_count"
+
+    script type="text/ng-template" id="template/recommendation.html"
+      a.pull-left ng-href="{{ repo.html_url }}"
+        img.media-object ng-src="{{ repo.owner.avatar_url }}&size=128" width="64" height="64"
+
+      .media-body
+        .row
+          .col-xs-9 style="overflow: hidden"
+            h4.media-heading
+              a ng-href="{{ repo.html_url }}" ng-bind="repo.full_name"
+            p
+              span(
+                style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
+                title="{{ repo.description }}"
+                ng-bind="repo.description"
+              )
+              span(
+                style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
+              )
+                span.octicon.octicon-star>
+                span ng-bind="repo.stargazers_count"
+          .col-xs-3
+            a.btn.btn-sm.btn-success(
+              style="width: 100%; margin-top: 18px"
+              ui-sref="related({ owner: repo.owner.login, name: repo.name })"
+            )
+              | Show Related

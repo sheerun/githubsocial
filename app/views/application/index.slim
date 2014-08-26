@@ -1,15 +1,8 @@
-.jumbotron ng-if="!Rails.current_user"
-  h1
-    img src=image_path('logo.png') style="width: 64px; height: 64px; display: inline-block; vertical-align: middle; margin-right: 10px"
-    span style="vertical-align: middle"
-      strong GitHub
-      span Social
-  p
-    | Collaborative repository recommendations based on GitHub stars.
-
-div ng-controller="SearchCtrl" ng-if="Rails.current_user" style="position: relative"
-  form
+div style="position: relative"
+  form ng-if="Rails.current_user"
     input.form-control(
+      style="font-size: 16px; margin-bottom: 5px"
+      autofocus="true"
       type="search"
       placeholder="Search repositories..."
       ng-model="repo"
@@ -19,8 +12,28 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user" style="position: relat
       typeahead-on-select="goToRelated($item)"
     )
 
-  div ng-if="related.subject"
+div ng-if="!related.enabled"
+  .jumbotron
+    h1
+      img src=image_path('logo.png') style="width: 64px; height: 64px; display: inline-block; vertical-align: middle; margin-right: 10px"
+      span style="vertical-align: middle"
+        strong GitHub
+        span Social
+    p
+      | Collaborative repository recommendations based on GitHub stars.
 
+  h2 Try some examples:
+
+  div style="margin-top: 20px"
+    .media ng-repeat="repo in Rails.default_repos" ng-include="'template/recommendation.html'"
+
+  footer
+    span> Created by
+    a href="http://sheerun.net" Adam Stankiewicz
+
+div ng-if="related.enabled"
+
+  div ng-if="related.subject"
     .panel.panel-default style="margin-top: 3px;"
       .panel-body
         .media
@@ -33,6 +46,7 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user" style="position: relat
               span(
                 style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
                 ng-bind="related.subject.description"
+                title="{{ related.subject.description }}"
               )
               span(
                 style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
@@ -45,36 +59,12 @@ div ng-controller="SearchCtrl" ng-if="Rails.current_user" style="position: relat
     h2 ng-if="related.results.length <= 0" No related repositories
     h2 ng-if="related.results.length > 0" Related repositories:
 
-    input> type="checkbox" ng-change="fetchRelated()" ng-model="related.excludeStarred"
-    label Ignore already starred repositories
+    div ng-if="Rails.current_user"
+      input> type="checkbox" ng-change="fetchRelated()" ng-model="related.excludeStarred"
+      label Ignore already starred repositories
 
+    .media ng-repeat="repo in related.results" ng-include="'template/recommendation.html'"
 
-    .media ng-repeat="repo in related.results"
-      a.pull-left ng-href="{{ repo.html_url }}"
-        img.media-object ng-src="{{ repo.owner.avatar_url }}&size=128" width="64" height="64"
-
-      .media-body
-        .row
-          .col-xs-9 style="overflow: hidden"
-            h4.media-heading
-              a ng-href="{{ repo.html_url }}" ng-bind="repo.full_name"
-            p
-              span(
-                style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
-                title="{{ repo.description }}"
-                ng-bind="repo.description"
-              )
-              span(
-                style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
-              )
-                span.octicon.octicon-star>
-                span ng-bind="repo.stargazers_count"
-          .col-xs-3
-            a.btn.btn-sm.btn-success(
-              style="width: 100%; margin-top: 18px"
-              ui-sref="related({ owner: repo.owner.login, name: repo.name })"
-            )
-              | Show Related
-    footer
+    footer ng-if="related.results.length > 10"
       span> Created by
       a href="http://sheerun.net" Adam Stankiewicz

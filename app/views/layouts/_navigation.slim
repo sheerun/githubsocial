@@ -1,0 +1,28 @@
+nav.navbar.navbar-default.navbar-static-top role="navigation"
+  .container
+    a href="/" ng-click="scrollTop()"
+      .navbar-header
+        .navbar-brand.logo
+          img.logo__img src=image_path('logo.png')
+          span.logo__text
+            strong GitHub
+            span Social
+
+    .nav.navbar-form.navbar-right(ng-cloak ng-if="!Rails.current_user")
+      button.btn.btn-sm.btn-default(
+        type="button"
+        ng-click="githubLogin()"
+      )
+        span Sign in
+        span.hidden-xs< for Extra Powers
+        span.octicon.octicon-mark-github
+
+    .nav.navbar-form.navbar-right(ng-cloak ng-if="Rails.current_user")
+      span.navbar__hello
+        | Hello, {{ Rails.current_user.login }}
+      button.btn.btn-sm.btn-default(
+        type="button"
+        href="/auth/logout"
+        ng-click="githubLogout()"
+      )
+        span.octicon.octicon-sign-out

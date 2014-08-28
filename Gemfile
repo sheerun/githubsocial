@@ -18,7 +18,7 @@ gem 'sidekiq-benchmark'
 gem 'sidekiq-failures'
 
 # Frontend
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails', '5.0.0.beta1'
 gem 'uglifier', '~> 2.4'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'slim-rails', '~> 2.0'

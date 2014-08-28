@@ -1,0 +1,53 @@
+script type="text/ng-template" id="/templates/index"
+  = render file: 'application/index'
+
+script type="text/ng-template" id="template/typeahead/typeahead-popup.html"
+  .panel.panel-default.typeahead(ng-if="isOpen()")
+    .panel-body
+      .media.u__relative(
+        ng-repeat="match in matches track by $index"
+        ng-class="{active: isActive($index), inactive: !isActive($index) }"
+        ng-mouseenter="selectActive($index)"
+        ng-click="selectMatch($index)"
+        role="option"
+      )
+        img.media-object.pull-left.repo_avatar(
+          ng-src="{{ match.model.owner.avatar_url }}&size=128"
+        )
+        .media-body
+          h4.media-heading
+            span ng-bind="match.model.full_name"
+          .u__ellipsed ng-bind="match.model.description"
+          .u__ellipsed
+            span.octicon.octicon-star>
+            span ng-bind="match.model.stargazers_count"
+
+script type="text/ng-template" id="template/recommendation.html"
+  a.pull-left ng-href="{{ repo.html_url }}"
+    img.media-object.repo__avatar(
+      ng-src="{{ repo.owner.avatar_url }}&size=128"
+    )
+
+  .media-body
+    .row
+      .col-xs-9
+
+        h4.media-heading
+          a ng-href="{{ repo.html_url }}" ng-bind="repo.full_name"
+
+        .u__ellipsed(
+          title="{{ repo.description }}"
+          ng-bind="repo.description"
+        )
+        .u__ellipsed
+          span.octicon.octicon-star>
+          span ng-bind="repo.stargazers_count"
+
+      .col-xs-3
+        .repo__show-related
+          a.btn.btn-sm.btn-success(
+            ui-sref="related({ owner: repo.owner.login, name: repo.name })"
+          )
+            span
+              span.hidden-xs Show Related
+            span.octicon.octicon-move-right

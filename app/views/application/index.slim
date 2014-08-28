@@ -1,7 +1,6 @@
-div style="position: relative"
+div.search
   form ng-if="Rails.current_user"
-    input.form-control(
-      style="font-size: 16px; margin-bottom: 5px"
+    input.form-control.search__input(
       autofocus="true"
       type="search"
       placeholder="Search repositories..."
@@ -13,10 +12,10 @@ div style="position: relative"
     )
 
 div ng-if="!related.enabled"
-  .jumbotron
+  .jumbotron.hidden-xs
     h1
-      img src=image_path('logo.png') style="width: 64px; height: 64px; display: inline-block; vertical-align: middle; margin-right: 10px"
-      span style="vertical-align: middle"
+      img.jumbotron__image src=image_path('logo.png')
+      span.jumbotron__text
         strong GitHub
         span Social
     p
@@ -24,8 +23,11 @@ div ng-if="!related.enabled"
 
   h2 Try some examples:
 
-  div style="margin-top: 20px"
-    .media ng-repeat="repo in Rails.default_repos" ng-include="'template/recommendation.html'"
+  div.suggestions
+    .media(
+      ng-repeat="repo in Rails.default_repos"
+      ng-include="'template/recommendation.html'"
+    )
 
   footer
     span> Created by
@@ -34,36 +36,46 @@ div ng-if="!related.enabled"
 div ng-if="related.enabled"
 
   div ng-if="related.subject"
-    .panel.panel-default style="margin-top: 3px;"
+    .panel.panel-default
       .panel-body
         .media
           a.pull-left ng-href="{{ related.subject.html_url }}"
-            img.media-object ng-src="{{ related.subject.owner.avatar_url }}&size=128" width="64" height="64"
+            img.media-object.repo__avatar(
+              ng-src="{{ related.subject.owner.avatar_url }}&size=128"
+            )
           .media-body
             h4.media-heading
-              a ng-href="{{ related.subject.html_url }}" ng-bind="related.subject.full_name"
-            p
-              span(
-                style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
-                ng-bind="related.subject.description"
-                title="{{ related.subject.description }}"
+              a(
+                ng-href="{{ related.subject.html_url }}"
+                ng-bind="related.subject.full_name"
               )
-              span(
-                style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
-              )
-                span.octicon.octicon-star>
-                span ng-bind="related.subject.stargazers_count"
+            .u__ellipsed(
+              ng-bind="related.subject.description"
+              title="{{ related.subject.description }}"
+            )
+            .u__ellipsed
+              span.octicon.octicon-star>
+              span ng-bind="related.subject.stargazers_count"
 
-  div.suggestions ng-if="related.subject"
+  div.recomendations ng-if="related.subject"
 
     h2 ng-if="related.results.length <= 0" No related repositories
     h2 ng-if="related.results.length > 0" Related repositories:
 
-    div ng-if="Rails.current_user"
-      input> type="checkbox" ng-change="fetchRelated()" ng-model="related.excludeStarred"
-      label Ignore already starred repositories
+    div
+      input>(
+        id="exclude_starred"
+        type="checkbox"
+        ng-change="fetchRelated()"
+        ng-model="related.excludeStarred"
+        ng-disabled="!Rails.current_user"
+      )
+      label for="exclude_starred" Ignore already starred repositories
 
-    .media ng-repeat="repo in related.results" ng-include="'template/recommendation.html'"
+    .media(
+      ng-repeat="repo in related.results"
+      ng-include="'template/recommendation.html'"
+    )
 
     footer ng-if="related.results.length > 10"
       span> Created by

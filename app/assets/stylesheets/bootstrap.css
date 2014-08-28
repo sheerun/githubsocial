@@ -3138,10 +3138,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     border-radius: 4px;
   }
 }
-@media (min-width: 768px) {
-  .navbar-header {
-    float: left;
-  }
+.navbar-header {
+  float: left;
 }
 .navbar-collapse {
   overflow-x: visible;
@@ -3327,22 +3325,18 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     margin-right: -15px;
   }
 }
-@media (min-width: 768px) {
-  .navbar-left {
-    float: left !important;
-  }
-  .navbar-right {
-    float: right !important;
-  }
+
+.navbar-left {
+  float: left !important;
 }
+.navbar-right {
+  float: right !important;
+}
+
 .navbar-form {
   margin-left: -15px;
   margin-right: -15px;
-  padding: 10px 15px;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid transparent;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: 5px 15px;
   margin-top: 6px;
   margin-bottom: 6px;
 }
@@ -3404,8 +3398,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     border: 0;
     margin-left: 0;
     margin-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
   }

@@ -1,4 +1,4 @@
-doctype html
+doctype(html)
 html lang="en" ng-app="gsocial"
   head
     meta charset="utf-8"
@@ -10,29 +10,10 @@ html lang="en" ng-app="gsocial"
     = javascript_include_tag "application", defer: true
     = csrf_meta_tags
     = favicon_link_tag 'favicon.png'
-  body id="#body"
-    .body-background
+  body.app
+    .body__background
 
-    nav.navbar.navbar-default.navbar-static-top role="navigation"
-      .container
-        a href="/" ng-click="scrollTop()"
-          .navbar-header: .navbar-brand style="vertical-align: middle"
-            img> src=image_path('logo.png') width="24" height="24" style="vertical-align: middle; padding: 0"
-            span style="vertical-align: middle"
-              strong GitHub
-              span Social
-        .nav.navbar-form.navbar-right ng-cloak="" ng-if="!Rails.current_user"
-          a.btn.btn-sm.btn-default(
-            type="button"
-            style="margin-top: 4px"
-            ng-click="githubLogin()"
-          ) Login for Extra Powers
-
-        .nav.navbar-form.navbar-right ng-cloak="" ng-if="Rails.current_user"
-          span> style="vertical-align: middle; padding-right: 8px;"
-            | Hello, {{ Rails.current_user.login }}
-          a.btn.btn-default.btn-sm href="/auth/logout" style="margin-top: 2px;" ng-click="githubLogout()"
-            span.octicon.octicon-sign-out style="vertical-align: middle; padding: 0; margin-left: 3px; cursor: pointer"
+    = render partial: 'layouts/navigation'
 
     - if flash[:alert]
       .container
@@ -42,68 +23,5 @@ html lang="en" ng-app="gsocial"
     .container ng-cloak=""
       div(ui-view)
 
-    script type="text/ng-template" id="/templates/index"
-      = render file: 'application/index'
-
-    script type="text/ng-template" id="template/typeahead/typeahead-popup.html"
-      .panel.panel-default.typeahead(ng-if="isOpen()")
-        .panel-body
-          .media(
-            ng-repeat="match in matches track by $index"
-            ng-class="{active: isActive($index), inactive: !isActive($index) }"
-            ng-mouseenter="selectActive($index)"
-            ng-click="selectMatch($index)"
-            role="option"
-            style="position: relative;"
-          )
-            img.media-object.pull-left ng-src="{{ match.model.owner.avatar_url }}&size=128" width="64" height="64"
-            .media-body
-              h4.media-heading
-                span ng-bind="match.model.full_name"
-              p
-                span(
-                  style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
-                  ng-bind="match.model.description"
-                )
-                span(
-                  style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
-                )
-                  span.octicon.octicon-star>
-                  span ng-bind="match.model.stargazers_count"
-
-    script type="text/ng-template" id="template/recommendation.html"
-      a.pull-left ng-href="{{ repo.html_url }}"
-        img.media-object ng-src="{{ repo.owner.avatar_url }}&size=128" width="64" height="64"
-
-      .media-body
-        .row
-          .col-xs-9 style="overflow: hidden"
-            h4.media-heading
-              a ng-href="{{ repo.html_url }}" ng-bind="repo.full_name"
-            p
-              span(
-                style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
-                title="{{ repo.description }}"
-                ng-bind="repo.description"
-              )
-              span(
-                style="display: block; white-space: nowrap; text-overflow: ellipsis; overflow: hidden"
-              )
-                span.octicon.octicon-star>
-                span ng-bind="repo.stargazers_count"
-          .col-xs-3
-            a.btn.btn-sm.btn-success(
-              style="width: 100%; margin-top: 18px"
-              ui-sref="related({ owner: repo.owner.login, name: repo.name })"
-            )
-              | Show Related
-
-    - if Rails.env.production?
-      javascript:
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-54181216-1', 'auto');
-        ga('send', 'pageview');
+    = render partial: 'layouts/templates'
+    = render partial: 'layouts/analytics'

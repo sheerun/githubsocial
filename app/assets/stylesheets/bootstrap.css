@@ -3309,7 +3309,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     background-image: none;
   }
 }
-@media (min-width: 768px) {
   .navbar-nav {
     float: left;
     margin: 0;
@@ -3318,13 +3317,12 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     float: left;
   }
   .navbar-nav > li > a {
-    padding-top: 15px;
+    padding-top: 18px;
     padding-bottom: 15px;
   }
   .navbar-nav.navbar-right:last-child {
     margin-right: -15px;
   }
-}
 
 .navbar-left {
   float: left !important;

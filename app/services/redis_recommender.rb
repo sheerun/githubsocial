@@ -67,7 +67,7 @@ class RedisRecommender
       size = @redis.scard("#{@collection_prefix}:#{collection_id}")
       min_connectivity = [2, options.fetch(:min_connectivity, (Math.sqrt(size) / 10).ceil)].max
 
-      max_sample = options.fetch(:max_sample, 100)
+      max_sample = options.fetch(:max_sample, 200)
       sets = @redis.srandmember("#{@collection_prefix}:#{collection_id}", max_sample).
         map { |contracollection_id| "#{@contracollection_prefix}:#{contracollection_id}" }
 

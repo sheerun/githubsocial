@@ -15,7 +15,7 @@ class Repo < ActiveRecord::Base
         raise "Unknown repository" unless repo
 
         bm.recommend do
-          RepoRecommenderCloud.instance.recommend(repo, max_sample: 5000, force: true)
+          RepoRecommenderCloud.instance.cached_ratings(repo, max_sample: 5000, force: true)
         end
       end
     end

@@ -25,7 +25,7 @@ App.config ($stateProvider, $locationProvider) ->
     templateUrl: "/templates/index"
 
   $stateProvider.state 'related',
-    url: "/:owner/:name/related"
+    url: "/:owner/:name"
     controller: 'SearchCtrl'
     templateUrl: "/templates/related"
 

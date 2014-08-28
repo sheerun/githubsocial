@@ -22,13 +22,13 @@ Application.routes.draw do
   end
   mount Sidekiq::Web => '/sidekiq'
 
-  get '/:owner/:name/related' => 'application#index', constraints: {
-    name: /[^\/]+/,
-    owner: /[^\/]+/,
-  }
-
   match '(errors)/:status', to: 'errors#show',
     constraints: { status: /\d{3}/ },
     defaults: { status: '500' },
     via: :all
+
+  get '/:owner/:name' => 'application#index', constraints: {
+    name: /[^\/]+/,
+    owner: /[^\/]+/,
+  }
 end

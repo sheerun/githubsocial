@@ -9,24 +9,30 @@ colors = [
   '#c373dc', '#95d6de', '#e6a18b', '#dc638c', '#dc638c', '#d16e87'
 ]
 
-size = 10
+size = 15
+size2 = 4
+size3 = 3
 tiles = 12
 
-image = ChunkyPNG::Image.new(12*size, 12*size, ChunkyPNG::Color.from_hex('#f0f0f0'))
+image = ChunkyPNG::Image.new(120, 120, ChunkyPNG::Color.from_hex('#f0f0f0'))
 favicon = ChunkyPNG::Image.new(32, 32, ChunkyPNG::Color.from_hex('#f0f0f0'))
+favicon2 = ChunkyPNG::Image.new(24, 24, ChunkyPNG::Color.from_hex('#f0f0f0'))
 rand = Random.new(42)
 
 (1...(tiles - 1)).each do |x|
   (1...(tiles - 1)).each do |y|
     color = ChunkyPNG::Color.from_hex(colors.sample(random: rand))
-    image.rect(x*size, y*size, x*size+size-1, y*size+size-1, color, color)
+    # image.rect(x*size, y*size, x*size+size-1, y*size+size-1, color, color)
 
     if x.between?(3, (tiles - 4)) && y.between?(3, (tiles - 4))
-      favicon.rect((x-2)*4, (y - 2)*4, (x-2)*4+3, (y-2)*4+3, color, color)
+      image.rect((x-2)*size, (y - 2)*size, (x-2)*size+size-1, (y-2)*size+size-1, color, color)
+      favicon.rect((x-2)*size2, (y - 2)*size2, (x-2)*size2+size2-1, (y-2)*size2+size2-1, color, color)
+      favicon2.rect((x-2)*size3, (y - 2)*size3, (x-2)*size3+size3-1, (y-2)*size3+size3-1, color, color)
     end
   end
 end
 
 dir = ::File.expand_path('../..',  __FILE__)
 image.save(File.join(dir, 'app/assets/images/logo.png'))
-favicon.save(File.join(dir, 'app/assets/images/favicon.png'))
+favicon.save(File.join(dir, 'public/favicon.png'))
+favicon2.save(File.join(dir, 'public/favicon-24.png'))

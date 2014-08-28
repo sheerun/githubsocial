@@ -5,13 +5,13 @@ script type="text/ng-template" id="template/typeahead/typeahead-popup.html"
   .panel.panel-default.typeahead(ng-if="isOpen()")
     .panel-body
       .media.u__relative(
-        ng-repeat="match in matches track by $index"
+        ng-repeat="match in matches track by match.model.id"
         ng-class="{active: isActive($index), inactive: !isActive($index) }"
         ng-mouseenter="selectActive($index)"
         ng-click="selectMatch($index)"
         role="option"
       )
-        img.media-object.pull-left.repo_avatar(
+        img.media-object.pull-left.repo__avatar(
           ng-src="{{ match.model.owner.avatar_url }}&size=128"
         )
         .media-body

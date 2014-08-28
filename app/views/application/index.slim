@@ -62,13 +62,12 @@ div ng-if="related.enabled"
     h2 ng-if="related.results.length <= 0" No related repositories
     h2 ng-if="related.results.length > 0" Related repositories:
 
-    div
+    div ng-if="Rails.current_user"
       input>(
         id="exclude_starred"
         type="checkbox"
         ng-change="fetchRelated()"
         ng-model="related.excludeStarred"
-        ng-disabled="!Rails.current_user"
       )
       label for="exclude_starred" Ignore already starred repositories
 

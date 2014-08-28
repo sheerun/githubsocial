@@ -1,9 +1,7 @@
-# ![favicon](http://githubsocial.com/favicon_github.png) GithubSocial [![Dependency Status][gemnasium-img-url]][gemnasium-url] [![Code Climate][codeclimate-img-url]][codeclimate-url] [![Build Status][travis-img-url]][travis-url]
+# ![favicon](http://githubsocial.com/favicon_github.png) GithubSocial [![Code Climate][codeclimate-img-url]][codeclimate-url] [![Build Status][travis-img-url]][travis-url]
 
 [codeclimate-img-url]: https://codeclimate.com/github/sheerun/githubsocial/badges/gpa.svg
 [codeclimate-url]: https://codeclimate.com/github/sheerun/githubsocial
-[gemnasium-img-url]: https://gemnasium.com/sheerun/githubsocial.png
-[gemnasium-url]: https://gemnasium.com/sheerun/githubsocial
 [travis-img-url]: https://travis-ci.org/sheerun/githubsocial.svg
 [travis-url]: https://travis-ci-org/sheerun/githubsocial
 

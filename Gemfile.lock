@@ -30,7 +30,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.6)
     arel (5.0.1.20140414130214)
-    autoprefixer-rails (3.0.0.20140821)
+    autoprefixer-rails (3.0.1.20140826)
       execjs
     awesome_print (1.2.0)
     better_errors (1.1.0)
@@ -97,9 +97,9 @@ GEM
       rack (~> 1.2)
     octicons-rails (2.1.0)
       railties (>= 3.2, < 5.0)
-    octokit (2.4.0)
-      sawyer (~> 0.5.1)
-    oj (2.10.0)
+    octokit (3.3.1)
+      sawyer (~> 0.5.3)
+    oj (2.10.2)
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
       rack (~> 1.0)
@@ -184,14 +184,14 @@ GEM
       sass (~> 3.2)
       sprockets (~> 2.12)
       sprockets-rails (>= 2.0, < 4.0)
-    sawyer (0.5.4)
+    sawyer (0.5.5)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
     sentry-raven (0.9.4)
       faraday (>= 0.7.6)
       hashie (>= 1.1.0)
       uuidtools
-    sidekiq (3.2.1)
+    sidekiq (3.2.2)
       celluloid (>= 0.15.2)
       connection_pool (>= 2.0.0)
       json
@@ -251,7 +251,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  autoprefixer-rails
+  autoprefixer-rails (~> 3.0.1)
   awesome_print
   better_errors
   binding_of_caller
@@ -262,8 +262,8 @@ DEPENDENCIES
   hiredis (~> 0.4.5)
   ngmin-rails (~> 0.4.0)
   octicons-rails
-  octokit
-  oj
+  octokit (~> 3.3.1)
+  oj (~> 2.10.2)
   omniauth-github
   pg (~> 0.17.1)
   pry
@@ -283,7 +283,7 @@ DEPENDENCIES
   rspec-rails (~> 3.0)
   sass-rails (= 5.0.0.beta1)
   sentry-raven
-  sidekiq
+  sidekiq (~> 3.2.2)
   sidekiq-benchmark
   sidekiq-failures
   sinatra (>= 1.3.0)

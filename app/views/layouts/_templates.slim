@@ -1,6 +1,23 @@
 script type="text/ng-template" id="/templates/index"
   = render file: 'application/index'
 
+script type="text/ng-template" id="/templates/related"
+  = render file: 'application/related'
+
+script type="text/ng-template" id="/templates/search"
+  div.search
+    form ng-if="Rails.current_user"
+      input.form-control.search__input(
+        autofocus="true"
+        type="search"
+        placeholder="Search repositories..."
+        ng-model="repo"
+        typeahead="repo for results in searchRepos($viewValue)"
+        typeahead-wait-ms="200"
+        typeahead-editable="true"
+        typeahead-on-select="goToRelated($item)"
+      )
+
 script type="text/ng-template" id="template/typeahead/typeahead-popup.html"
   .panel.panel-default.typeahead(ng-if="isOpen()")
     .panel-body
@@ -22,7 +39,7 @@ script type="text/ng-template" id="template/typeahead/typeahead-popup.html"
             span.octicon.octicon-star>
             span ng-bind="match.model.stargazers_count"
 
-script type="text/ng-template" id="template/recommendation.html"
+script type="text/ng-template" id="/templates/recommendation"
   a.pull-left ng-href="{{ repo.html_url }}"
     img.media-object.repo__avatar(
       ng-src="{{ repo.owner.avatar_url }}&size=128"

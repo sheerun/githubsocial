@@ -1,5 +1,8 @@
 App = angular.module('gsocial')
 
+App.controller 'IndexCtrl', ->
+
+
 App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams, $state) ->
   $scope.search =
     query: ''
@@ -18,9 +21,6 @@ App.controller 'SearchCtrl', (Rails, $scope, $github, $http, $stateParams, $stat
     $http.get(url, cache: true).then (response) ->
       $scope.search.results = response.data.items
       $scope.search.results
-
-  $scope.goToRelated = (model) ->
-    $state.go('related', owner: model.owner.login, name: model.name)
 
   $scope.fetchRelated = ->
     params = {}

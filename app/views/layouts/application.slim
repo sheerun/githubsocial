@@ -10,19 +10,18 @@ html lang="en" ng-app="gsocial"
     = javascript_include_tag "application", defer: true
     = csrf_meta_tags
     = favicon_link_tag 'favicon.png'
-  = cache 'body'
-    body.app
-      .body__background
+  body.app
+    .body__background
 
-      = render partial: 'layouts/navigation'
+    = render partial: 'layouts/navigation'
 
-      - if flash[:alert]
-        .container
-          .alert.alert-danger
-            = alert
+    - if flash[:alert]
+      .container
+        .alert.alert-danger
+          = alert
 
-      .container ng-cloak=""
-        div(ui-view)
+    .container ng-cloak=""
+      div(ui-view)
 
-      = render partial: 'layouts/templates'
-      = render partial: 'layouts/analytics'
+    = render partial: 'layouts/templates'
+    = render partial: 'layouts/analytics'

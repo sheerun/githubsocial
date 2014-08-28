@@ -1,81 +1,22 @@
-div.search
-  form ng-if="Rails.current_user"
-    input.form-control.search__input(
-      autofocus="true"
-      type="search"
-      placeholder="Search repositories..."
-      ng-model="repo"
-      typeahead="repo for results in searchRepos($viewValue)"
-      typeahead-wait-ms="200"
-      typeahead-editable="true"
-      typeahead-on-select="goToRelated($item)"
-    )
+div ng-include="'/templates/search'"
 
-div ng-if="!related.enabled"
-  .jumbotron.hidden-xs
-    h1
-      img.jumbotron__image src=image_path('logo.png')
-      span.jumbotron__text
-        strong GitHub
-        span Social
-    p
-      | Collaborative repository recommendations based on GitHub stars.
+.jumbotron.hidden-xs
+  h1
+    img.jumbotron__image src=image_path('logo.png')
+    span.jumbotron__text
+      strong GitHub
+      span Social
+  p
+    | Collaborative repository recommendations based on GitHub stars.
 
-  h2 Try some examples:
+h2 Try some examples:
 
-  div.suggestions
-    .media(
-      ng-repeat="repo in Rails.default_repos"
-      ng-include="'template/recommendation.html'"
-    )
+div.suggestions
+  .media(
+    ng-repeat="repo in Rails.default_repos"
+    ng-include="'/templates/recommendation'"
+  )
 
-  footer
-    span> Created by
-    a href="http://sheerun.net" Adam Stankiewicz
-
-div ng-if="related.enabled"
-
-  div ng-if="related.subject"
-    .panel.panel-default
-      .panel-body
-        .media
-          a.pull-left ng-href="{{ related.subject.html_url }}"
-            img.media-object.repo__avatar(
-              ng-src="{{ related.subject.owner.avatar_url }}&size=128"
-            )
-          .media-body
-            h4.media-heading
-              a(
-                ng-href="{{ related.subject.html_url }}"
-                ng-bind="related.subject.full_name"
-              )
-            .u__ellipsed(
-              ng-bind="related.subject.description"
-              title="{{ related.subject.description }}"
-            )
-            .u__ellipsed
-              span.octicon.octicon-star>
-              span ng-bind="related.subject.stargazers_count"
-
-  div.recomendations ng-if="related.subject"
-
-    h2 ng-if="related.results.length <= 0" No related repositories
-    h2 ng-if="related.results.length > 0" Related repositories:
-
-    div ng-if="Rails.current_user"
-      input>(
-        id="exclude_starred"
-        type="checkbox"
-        ng-change="fetchRelated()"
-        ng-model="related.excludeStarred"
-      )
-      label for="exclude_starred" Ignore already starred repositories
-
-    .media(
-      ng-repeat="repo in related.results"
-      ng-include="'template/recommendation.html'"
-    )
-
-    footer ng-if="related.results.length > 10"
-      span> Created by
-      a href="http://sheerun.net" Adam Stankiewicz
+footer
+  span> Created by
+  a href="http://sheerun.net" Adam Stankiewicz

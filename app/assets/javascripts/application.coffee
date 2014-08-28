@@ -27,11 +27,11 @@ App.config ($stateProvider, $locationProvider) ->
   $stateProvider.state 'related',
     url: "/:owner/:name/related"
     controller: 'SearchCtrl'
-    templateUrl: "/templates/index"
+    templateUrl: "/templates/related"
 
   $locationProvider.html5Mode(true)
 
-App.run ($rootScope, $window, $http) ->
+App.run ($rootScope, $window, $http, $state) ->
   $rootScope.githubLogin = ->
     $window.location.assign('/auth/github')
 
@@ -40,6 +40,9 @@ App.run ($rootScope, $window, $http) ->
 
   $rootScope.scrollTop = ->
     $window.scrollTo(0, 0)
+
+  $rootScope.goToRelated = (model) ->
+    $state.go('related', owner: model.owner.login, name: model.name)
 
 
 App.constant('Rails', window.Rails)

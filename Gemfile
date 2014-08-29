@@ -12,6 +12,7 @@ gem 'octokit', '~> 3.3.1'
 gem 'rake'
 gem 'redmon', require: false
 gem 'librato-rails'
+gem 'dalli'
 
 # Background tasks
 gem 'sinatra', '>= 1.3.0', :require => nil

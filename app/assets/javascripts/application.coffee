@@ -29,13 +29,15 @@ App.config ($stateProvider, $locationProvider) ->
     controller: 'SearchCtrl'
     templateUrl: "/templates/related"
     resolve:
-      related: (Rails, $rootScope, $http, $stateParams, $state) ->
-        query =
-          name: "#{$stateParams.owner}/#{$stateParams.name}"
-          popularity: 3
-          excludeStarred: Rails.current_user?
+      related: ['Rails', '$rootScope', '$stateParams'
+        (Rails, $rootScope, $stateParams) ->
+          query =
+            name: "#{$stateParams.owner}/#{$stateParams.name}"
+            popularity: 3
+            excludeStarred: Rails.current_user?
 
-        $rootScope.fetchRelated(query)
+          $rootScope.fetchRelated(query)
+      ]
 
   $locationProvider.html5Mode(true)
 
@@ -78,7 +80,6 @@ App.run ($rootScope, $window, $http, $state, $stateParams, Rails, alert) ->
   $rootScope.$on '$stateChangeError',
   (event, toState, toParams, fromState, fromParams, error) ->
     $rootScope.loading = false
-    console.log(error)
     alert.danger(message: error.statusText)
 
 App.constant('Rails', window.Rails)

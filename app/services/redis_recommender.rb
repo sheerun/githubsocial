@@ -99,7 +99,7 @@ class RedisRecommender
         "#{@user_prefix}:#{id}"
       }
 
-      penalize_factor = options.fetch(:penalize_factor, 2)
+      penalize_factor = options.fetch(:penalize_factor, 3)
 
       @redis.evalsha(
         @command,

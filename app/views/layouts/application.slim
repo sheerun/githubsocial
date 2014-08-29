@@ -13,37 +13,38 @@ html lang="en" ng-app="gsocial"
     = javascript_include_tag "application", defer: true
     = csrf_meta_tags
     = favicon_link_tag 'favicon.png'
-  body
-    .body__background
+  = cache 'body'
+    body
+      .body__background
 
-    = render partial: 'layouts/navigation'
+      = render partial: 'layouts/navigation'
 
-    .container ng-if="alerts.length" ng-cloak=""
-      .row ng-repeat="alert in alerts"
-        .col-lg-12.col-sm-12.col-md-12
-          div class="alert alert-{{ alert.type }}"
-            button.close.btn--alert(
-              type="button"
-              ng-click="alert.close(this)"
-            )
-              | ×
+      .container ng-if="alerts.length" ng-cloak=""
+        .row ng-repeat="alert in alerts"
+          .col-lg-12.col-sm-12.col-md-12
+            div class="alert alert-{{ alert.type }}"
+              button.close.btn--alert(
+                type="button"
+                ng-click="alert.close(this)"
+              )
+                | ×
 
-            button.btn.btn-xs.btn--alert(
-              ng-repeat="button in alert.buttons"
-              type="button"
-              class="btn-{{ button.type || alert.type }}"
-              ng-click="button.click()"
-            )
-              | {{ button.label }}
+              button.btn.btn-xs.btn--alert(
+                ng-repeat="button in alert.buttons"
+                type="button"
+                class="btn-{{ button.type || alert.type }}"
+                ng-click="button.click()"
+              )
+                | {{ button.label }}
 
-            span ng-bind="alert.message"
+              span ng-bind="alert.message"
 
-    .container ng-if="loading"
-      span us-spinner="{radius:50, width:20, length: 20}"
+      .container ng-if="loading"
+        span us-spinner="{radius:50, width:20, length: 20}"
 
-    .container ng-cloak="" ng-if="!loading"
-      div(ui-view)
+      .container ng-cloak="" ng-if="!loading"
+        div(ui-view)
 
 
-    = render partial: 'layouts/templates'
-    = render partial: 'layouts/analytics'
+      = render partial: 'layouts/templates'
+      = render partial: 'layouts/analytics'

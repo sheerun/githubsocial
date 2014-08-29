@@ -3,7 +3,7 @@
 [codeclimate-img-url]: https://codeclimate.com/github/sheerun/githubsocial/badges/gpa.svg
 [codeclimate-url]: https://codeclimate.com/github/sheerun/githubsocial
 [travis-img-url]: https://travis-ci.org/sheerun/githubsocial.svg
-[travis-url]: https://travis-ci-org/sheerun/githubsocial
+[travis-url]: https://travis-ci.org/sheerun/githubsocial
 
 Real-time collaborative repository recommendations based on GitHub stars.
 

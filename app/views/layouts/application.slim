@@ -1,4 +1,4 @@
-doctype(html)
+doctype html
 html lang="en" ng-app="gsocial"
   head
     meta charset="utf-8"
@@ -15,13 +15,32 @@ html lang="en" ng-app="gsocial"
 
     = render partial: 'layouts/navigation'
 
-    - if flash[:alert]
-      .container
-        .alert.alert-danger
-          = alert
+    .container ng-if="alerts.length" ng-cloak=""
+      .row ng-repeat="alert in alerts"
+        .col-lg-12.col-sm-12.col-md-12
+          div class="alert alert-{{ alert.type }}"
+            button.close.btn--alert(
+              type="button"
+              ng-click="alert.close(this)"
+            )
+              | ×
 
-    .container ng-cloak=""
+            button.btn.btn-xs.btn--alert(
+              ng-repeat="button in alert.buttons"
+              type="button"
+              class="btn-{{ button.type || alert.type }}"
+              ng-click="button.click()"
+            )
+              | {{ button.label }}
+
+            span ng-bind="alert.message"
+
+    .container ng-if="loading" style="margin-top: 100px"
+      span us-spinner="{radius:100, width:30, length: 50}"
+
+    .container ng-cloak="" ng-if="!loading"
       div(ui-view)
+
 
     = render partial: 'layouts/templates'
     = render partial: 'layouts/analytics'

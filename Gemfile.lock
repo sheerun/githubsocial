@@ -160,11 +160,16 @@ GEM
     rails-assets-angular-bootstrap (0.11.0)
       rails-assets-angular (>= 1)
     rails-assets-angular-cache (3.1.0)
+    rails-assets-angular-loading-bar (0.5.1)
+    rails-assets-angular-spinner (0.5.1)
+      rails-assets-angular (>= 1.0.0, < 1.4.0)
+      rails-assets-spin.js (~> 2.0.0)
     rails-assets-angular-ui-router (0.2.10)
       rails-assets-angular (>= 1.0.8)
     rails-assets-angular-ui-select (0.6.0)
       rails-assets-angular (~> 1.2)
     rails-assets-lodash (2.4.1)
+    rails-assets-spin.js (2.0.1)
     railties (4.1.5)
       actionpack (= 4.1.5)
       activesupport (= 4.1.5)
@@ -301,9 +306,12 @@ DEPENDENCIES
   rails-assets-angular
   rails-assets-angular-bootstrap
   rails-assets-angular-cache
+  rails-assets-angular-loading-bar
+  rails-assets-angular-spinner
   rails-assets-angular-ui-router
   rails-assets-angular-ui-select
   rails-assets-lodash
+  rails-assets-spin.js
   rake
   redis (~> 3.1.0)
   redmon

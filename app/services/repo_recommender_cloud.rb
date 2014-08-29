@@ -21,7 +21,7 @@ class RepoRecommenderCloud
 
     {
       subject: subject.as_json(extended: true),
-      related: related
+      results: related
     }
   end
 

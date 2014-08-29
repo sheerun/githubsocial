@@ -35,6 +35,9 @@ gem 'rails-assets-angular-cache'
 gem 'rails-assets-angular-ui-router'
 gem 'rails-assets-angular-bootstrap'
 gem 'rails-assets-angular-ui-select'
+gem 'rails-assets-angular-loading-bar'
+gem 'rails-assets-spin.js'
+gem 'rails-assets-angular-spinner'
 gem 'octicons-rails'
 
 # Import

@@ -34,7 +34,7 @@ div.recomendations ng-if="related.subject"
           id="exclude_starred"
           type="checkbox"
           ng-change="fetchRelated()"
-          ng-model="related.excludeStarred"
+          ng-model="query.excludeStarred"
         )
         label for="exclude_starred" Ignore already starred repositories
       .col-sm-7.popularity
@@ -43,14 +43,14 @@ div.recomendations ng-if="related.subject"
           .btn.btn-default.btn-sm(
             ng-repeat="i in [1,2,3,4,5,6,7,8,9]"
             ng-bind="i"
-            ng-model="related.popularity"
+            ng-model="query.popularity"
             btn-radio="i"
             ng-change="fetchRelated()"
           )
         label Hipster
 
   div style="position: relative"
-    slider floor="1" ceiling="10" step="1" ng-model="related.popularity"
+    slider floor="1" ceiling="10" step="1" ng-model="query.popularity"
 
   .media(
     ng-repeat="repo in related.results"

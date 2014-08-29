@@ -33,7 +33,7 @@ App.config ($stateProvider, $locationProvider) ->
         (Rails, $rootScope, $stateParams) ->
           query =
             name: "#{$stateParams.owner}/#{$stateParams.name}"
-            popularity: 3
+            popularity: 5
             excludeStarred: Rails.current_user?
 
           $rootScope.fetchRelated(query)

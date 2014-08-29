@@ -9,7 +9,7 @@ App.controller 'SearchCtrl', (Rails, $scope, $rootScope, $stateParams, $state, r
 
   $scope.query =
     name: "#{$stateParams.owner}/#{$stateParams.name}"
-    popularity: 3
+    popularity: 5
     excludeStarred: Rails.current_user?
 
   $scope.fetchRelated = ->

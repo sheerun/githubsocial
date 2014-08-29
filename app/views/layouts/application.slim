@@ -35,8 +35,8 @@ html lang="en" ng-app="gsocial"
 
             span ng-bind="alert.message"
 
-    .container ng-if="loading" style="margin-top: 100px"
-      span us-spinner="{radius:100, width:30, length: 50}"
+    .container ng-if="loading"
+      span us-spinner="{radius:50, width:20, length: 20}"
 
     .container ng-cloak="" ng-if="!loading"
       div(ui-view)

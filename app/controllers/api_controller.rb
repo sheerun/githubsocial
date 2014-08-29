@@ -1,9 +1,11 @@
 class ApiController < ApplicationController
 
+  layout false
+
+  instrument_action :related_repos
+
   def index
-    render json: JSON.pretty_generate(
-      recommendation_url: '/api'
-    )
+    head :ok
   end
 
   def related_repos

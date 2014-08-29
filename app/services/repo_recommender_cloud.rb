@@ -15,7 +15,7 @@ class RepoRecommenderCloud
   def recommend(subject, options = {})
     related = []
 
-    benchmark "recommend" do
+    Librato.timing "recommend" do
       related = recommender_by_id(subject.id).recommend(subject.id, options)
     end
 

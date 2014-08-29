@@ -4,10 +4,6 @@
 #= require angular-bootstrap
 #= require angular-ui-router
 #= require angular-ui-select
-#= require angular-github-adapter/src/github
-#= require angular-github-adapter/src/githubRepository
-#= require angular-github-adapter/src/githubUser
-#= require angular-github-adapter/src/githubGist
 #= require_self
 #= require_tree ./controllers
 
@@ -15,13 +11,12 @@ App = angular.module 'gsocial', [
   'ui.router'
   'ui.bootstrap'
   'ui.select'
-  'pascalprecht.github-adapter'
 ]
 
 App.config ($stateProvider, $locationProvider) ->
   $stateProvider.state 'index',
     url: "/"
-    controller: 'SearchCtrl'
+    controller: 'IndexCtrl'
     templateUrl: "/templates/index"
 
   $stateProvider.state 'related',
@@ -31,7 +26,7 @@ App.config ($stateProvider, $locationProvider) ->
 
   $locationProvider.html5Mode(true)
 
-App.run ($rootScope, $window, $http, $state) ->
+App.run ($rootScope, $window, $http, $state, Rails) ->
   $rootScope.githubLogin = ->
     $window.location.assign('/auth/github')
 
@@ -44,13 +39,20 @@ App.run ($rootScope, $window, $http, $state) ->
   $rootScope.goToRelated = (model) ->
     $state.go('related', owner: model.owner.login, name: model.name)
 
+  $rootScope.search =
+    query: ''
+    results: []
+
+  $rootScope.searchRepos = (query) ->
+    url = "https://api.github.com/search/repositories?" +
+          "q=#{query}&per_page=5&access_token=#{Rails.current_user.github_token}"
+
+    $http.get(url, cache: true).then (response) ->
+      $rootScope.search.results = response.data.items
+      $rootScope.search.results
+
 
 App.constant('Rails', window.Rails)
-
-App.config ($githubProvider, Rails) ->
-  if Rails.current_user
-    $githubProvider.token(Rails.current_user.github_token)
-    $githubProvider.authType('basic')
 
 App.run ($rootScope, Rails) ->
   $rootScope.Rails = Rails

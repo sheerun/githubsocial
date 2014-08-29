@@ -33,7 +33,6 @@ gem 'rails-assets-angular-cache'
 gem 'rails-assets-angular-ui-router'
 gem 'rails-assets-angular-bootstrap'
 gem 'rails-assets-angular-ui-select'
-gem 'rails-assets-sheerun--angular-github-adapter'
 gem 'octicons-rails'
 
 # Import

@@ -28,19 +28,36 @@ div.recomendations ng-if="related.subject"
   h2 ng-if="related.results.length > 0" Related repositories:
 
   div ng-if="Rails.current_user"
-    input>(
-      id="exclude_starred"
-      type="checkbox"
-      ng-change="fetchRelated()"
-      ng-model="related.excludeStarred"
-    )
-    label for="exclude_starred" Ignore already starred repositories
+    .row
+      .col-sm-5
+        input>(
+          id="exclude_starred"
+          type="checkbox"
+          ng-change="fetchRelated()"
+          ng-model="related.excludeStarred"
+        )
+        label for="exclude_starred" Ignore already starred repositories
+      .col-sm-7.popularity
+        label Mainstream
+        .btn-group.popularity__select
+          .btn.btn-default.btn-sm(
+            ng-repeat="i in [1,2,3,4,5,6,7,8,9]"
+            ng-bind="i"
+            ng-model="related.popularity"
+            btn-radio="i"
+            ng-change="fetchRelated()"
+          )
+        label Hipster
+
+  div style="position: relative"
+    slider floor="1" ceiling="10" step="1" ng-model="related.popularity"
 
   .media(
     ng-repeat="repo in related.results"
     ng-include="'/templates/recommendation'"
   )
 
-  footer ng-if="related.results.length > 10"
-    span> Created by
-    a href="http://sheerun.net" Adam Stankiewicz
+  footer
+    span ng-if="related.results.length > 10"
+      span> Created by
+      a href="http://sheerun.net" Adam Stankiewicz

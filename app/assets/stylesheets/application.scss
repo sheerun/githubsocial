@@ -163,3 +163,13 @@ footer {
     margin-bottom: 5px;
   }
 }
+
+.popularity {
+  text-align: right;
+  margin-top: -3px;
+  
+  &__select {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+}

@@ -1,0 +1,11 @@
+require 'redis'
+
+redis = Redis.new(:driver => :hiredis)
+
+redis.keys('starred:*').each { |key|
+  if redis.scard(key) > 1000
+    id = key.split(':')[1]
+    puts id
+    redis.sadd('overgazers', id)
+  end
+}

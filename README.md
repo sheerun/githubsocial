@@ -63,18 +63,17 @@ bin/download
 
 You'll also need compiled redis instance in 32bit mode, and increased shared integer count (memory savings):
 
-```diff
--#define REDIS_SHARED_INTEGERS 10000
-+#define REDIS_SHARED_INTEGERS 15000000
+```
+#define REDIS_SHARED_INTEGERS 15000000
 ```
 
-```bash
+```
 make 32bit
 ```
 
 After your redis instance is up and running with downloaded `dump.rdb`, and PostgreSQL with imported `dump.sql.gz`, you can bundle application:
 
-```ruby
+```
 bundle install
 bin/rake db:create
 bin/rake db:migrate

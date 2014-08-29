@@ -78,6 +78,7 @@ App.run ($rootScope, $window, $http, $state, $stateParams, Rails, alert) ->
   $rootScope.$on '$stateChangeError',
   (event, toState, toParams, fromState, fromParams, error) ->
     $rootScope.loading = false
+    console.log(error)
     alert.danger(message: error.statusText)
 
 App.constant('Rails', window.Rails)

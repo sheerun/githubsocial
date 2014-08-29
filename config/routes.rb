@@ -22,6 +22,13 @@ Application.routes.draw do
   end
   mount Sidekiq::Web => '/sidekiq'
 
+  Redmon::App.use(Rack::Auth::Basic) do |user, password|
+    [user, password] == [
+      "admin", ENV['SIDEKIQ_PASSWORD'] || "password"
+    ]
+  end
+  mount Redmon::App => '/redmon'
+
   match '(errors)/:status', to: 'errors#show',
     constraints: { status: /\d{3}/ },
     defaults: { status: '500' },

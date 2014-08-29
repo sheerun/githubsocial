@@ -6,16 +6,17 @@ script type="text/ng-template" id="/templates/related"
 
 script type="text/ng-template" id="/templates/search"
   div.search
-    form ng-if="Rails.current_user"
+    form
       input.form-control.search__input(
         autofocus="true"
         type="search"
-        placeholder="Search repositories..."
+        placeholder="{{ Rails.current_user ? 'Search repositories...' : 'Search repositories... (sign in required)' }}"
         ng-model="repo"
         typeahead="repo for results in searchRepos($viewValue)"
         typeahead-wait-ms="200"
         typeahead-editable="true"
         typeahead-on-select="goToRelated($item)"
+        ng-disabled="!Rails.current_user"
       )
 
 script type="text/ng-template" id="template/typeahead/typeahead-popup.html"

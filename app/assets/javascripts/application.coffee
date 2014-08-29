@@ -1,5 +1,4 @@
 #= require lodash
-#= require github
 #= require angular
 #= require angular-bootstrap
 #= require angular-ui-router

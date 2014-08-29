@@ -16,8 +16,7 @@ class ApiController < ApplicationController
     if repo.present?
       recommended = recommender.recommend(repo,
         user_id: user_id,
-        penalize_factor: penalize_factor,
-        force: true
+        penalize_factor: penalize_factor
       )
       render json: JSON.pretty_generate(recommended)
     else

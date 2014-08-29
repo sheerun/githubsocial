@@ -79,7 +79,8 @@ class RedisRecommender
   end
 
   def cached_ratings(id, options = {})
-    cache_key = "related:#{@item_prefix}:#{id}"
+    penalize_factor = options.fetch(:penalize_factor, 3)
+    cache_key = "related:#{@item_prefix}:#{id}:#{penalize_factor}"
 
     if @redis.exists(cache_key) && !options[:force]
       @redis.zrevrange(cache_key, 0, -1, withscores: true)
@@ -99,13 +100,16 @@ class RedisRecommender
         "#{@user_prefix}:#{id}"
       }
 
-      penalize_factor = options.fetch(:penalize_factor, 3)
-
-      @redis.evalsha(
+      results = @redis.evalsha(
         @command,
         sets,
-        [@item_prefix, size, min_connectivity, 30, penalize_factor, cache_key]
+        [@item_prefix, size, min_connectivity, 25, penalize_factor, cache_key]
       ).each_slice(2).to_a
+
+      zset = results.map { |key, score| [score.to_f, key] }
+      @redis.zadd(cache_key, zset)
+      @redis.expire(cache_key, 604800)
+      results
     end
   end
 

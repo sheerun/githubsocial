@@ -29,6 +29,14 @@ We use similar approach to [predictor](https://github.com/Pathgather/predictor),
 - Redis is used in 32bit mode and with increased shared integer pool to improve memory usage.
 - The "popularity penalty factor" is used for discovering less popular repositories. The penalty factor can be provided by user.
 
+The similarity formula is as follows:
+
+$$
+S(R_1, R_2) = \frac{|R_1 \cap R_2|}{|R_1| + P|R_2|}
+$$
+
+Where $$R_1$$ is set of users liking subject repository, $$R_2$$ is set of users liking related repository, and $$P$$ is a popularity penalty factor provided by user.
+
 ## Performance
 
 Algorithm is able to analyse hundreds of thousands of stars under 0.5s while maintaining memory usage less than 1GB on GitHub dataset.

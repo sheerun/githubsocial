@@ -28,8 +28,9 @@ We use similar approach to [predictor](https://github.com/Pathgather/predictor),
 - Employ [optimizations](http://redis.io/topics/memory-optimization) by  computations on sets of integers instead set of strings.
 - Redis is used in 32bit mode and with increased shared integer pool to improve memory usage.
 - The "popularity penalty factor" is used for discovering less popular repositories. The penalty factor can be provided by user.
+- For real-time recommendations, ignoring users that have more than 1000 stars.
 
-The similarity formula is as follows:
+The similarity formula reads as follows:
 
 ```
             |U(A)| ∩ |U(B)|
@@ -37,11 +38,15 @@ S(A, B) = -------------------
           |U(A)| + P * |U(B)|
 ```
 
-Where `A` is subject repository, `B` is related repository, `U(x)` is set of users starring `x` repository, and `P` is a "popularity penalty factor" provided by user.
+Where `A` is subject repository, `B` is related repository, `U(x)` is set of users starring `x` repository, and `P` is a "popularity penalty factor" provided by user in UI. 
+
+The algorithm is implemented in [redis_recommender.rb](https://github.com/sheerun/githubsocial/blob/master/app/services/redis_recommender.rb).
 
 ## Performance
 
-Algorithm is able to analyse hundreds of thousands of stars under 0.5s while maintaining memory usage less than 1GB on GitHub dataset.
+Algorithm is able to analyse hundreds of thousands of stars well under 1 second while maintaining memory usage less than 1GB on GitHub dataset. One Redis database with caching is enough for handling GitHub-size dataset. 
+
+Recommendation speed can be improved by introducing more Redis slaves.
 
 ## Requirements
 
@@ -62,9 +67,8 @@ Algorithm is able to analyse hundreds of thousands of stars under 0.5s while mai
 Application requires Redis and PostgreSQL database dumps. They can be downloaded using `bin/download` script. Please download only if you really need to test live data.
 
 ```bash
-bin/download
-# db/dump.rdb (Redis)
-# db/dump.sql.gz (PostgreSQL)
+curl -o db/dump.rdb http://sheerun.net/dump.rdb
+curl -o db/dump.sql.gz http://sheerun.net/dump.sql.gz
 ```
 
 You'll also need compiled redis instance in 32bit mode, and increased shared integer count (memory savings):

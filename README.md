@@ -1,4 +1,4 @@
-# ![favicon](http://githubsocial.com/favicon-24.png) Github Social 
+# ![favicon](http://githubsocial.com/favicon-24.png) Github Social [![Code Climate][codeclimate-img-url]][codeclimate-url] [![Build Status][travis-img-url]][travis-url]
 
 [codeclimate-img-url]: https://codeclimate.com/github/sheerun/githubsocial/badges/gpa.svg
 [codeclimate-url]: https://codeclimate.com/github/sheerun/githubsocial
@@ -62,7 +62,7 @@ Recommendation speed can be improved by introducing more Redis slaves.
 - SCSS, SLIM
 - Sidekiq
 
-## Installation
+## Production installation
 
 Application requires Redis and PostgreSQL database dumps. They can be downloaded using `bin/download` script. Please download only if you really need to test live data.
 
@@ -71,7 +71,7 @@ curl -o db/dump.rdb http://sheerun.net/dump.rdb
 curl -o db/dump.sql.gz http://sheerun.net/dump.sql.gz
 ```
 
-You'll also need compiled redis instance in 32bit mode, and increased shared integer count (memory savings):
+You'll also need compiled redis instance in 32bit mode, and increased shared integer count:
 
 ```
 #define REDIS_SHARED_INTEGERS 15000000

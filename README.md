@@ -31,11 +31,13 @@ We use similar approach to [predictor](https://github.com/Pathgather/predictor),
 
 The similarity formula is as follows:
 
-$$
-S(R_1, R_2) = \frac{|R_1 \cap R_2|}{|R_1| + P|R_2|}
-$$
+```
+             |A| ∩ |B|
+S(A, B) = --------------
+           |A| + P * |B|
+```
 
-Where $$R_1$$ is set of users liking subject repository, $$R_2$$ is set of users liking related repository, and $$P$$ is a popularity penalty factor provided by user.
+Where `A` is set of users liking subject repository, `B` is set of users liking related repository, and `P` is a popularity penalty factor provided by user.
 
 ## Performance
 

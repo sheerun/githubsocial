@@ -1,4 +1,4 @@
-# ![favicon](http://githubsocial.com/favicon-24.png) GithubSocial [![Code Climate][codeclimate-img-url]][codeclimate-url] [![Build Status][travis-img-url]][travis-url]
+# ![favicon](http://githubsocial.com/favicon-24.png) Github Social 
 
 [codeclimate-img-url]: https://codeclimate.com/github/sheerun/githubsocial/badges/gpa.svg
 [codeclimate-url]: https://codeclimate.com/github/sheerun/githubsocial
@@ -7,35 +7,31 @@
 
 Real-time collaborative repository recommendations based on GitHub stars.
 
-## What?
+## About
 
-Application is using information about starred repositories on GitHub, to produce clever and quick recommendation of what to like next. It recognizes collective trends by analysing hundreds of thousands of stars per recommendation.
+Application shows related GitHub projects, by analysing GitHub stars.
 
-Application is using offline data updated in real-time from [GitHub API](https://developer.github.com/v3/). Seed data has been extracted from [Github Archive](http://www.githubarchive.org/), and [GH Torrent](http://ghtorrent.org/) websites. Specifically:
+Application is using offline data that is updated continously from [GitHub API](https://developer.github.com/v3/). The seed database has been extracted from [Github Archive](http://www.githubarchive.org/), and [GH Torrent](http://ghtorrent.org/) websites. Specifically:
 
-- List of GitHub Repositories (stored in Postgres)
-- List of GitHub Users (stored in Postgres)
-- List of starred Repositories of each User (stored in Redis)
+* List of GitHub Repositories and Users (stored in PostgreSQL)
+* List of starred Repositories of each User (stored in Redis)
 
 ## Used algorithm
 
-Application is using Memory-based, Item-based [Collaborative Filtering](https://en.wikipedia.org/wiki/Collaborative_filtering) algorithm using optimized [Sørensen–Dice coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient) for detecting similarity between any two repositories.
+Application is using Memory-based, Item-based [Collaborative Filtering](https://en.wikipedia.org/wiki/Collaborative_filtering) algorithm using modifier [Sørensen–Dice coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient) for detecting similarity between given two repositories.
 
-The algorithm is inspired by [predictor](https://github.com/Pathgather/predictor), with few important differences, among others:
+We use similar approach to [predictor](https://github.com/Pathgather/predictor), with important differences, among others:
 
-- Similarities are computed collectively using [zunionstore](https://github.com/sheerun/githubsocial/blob/master/app/services/redis_recommender.rb#L13) redis command, instead of computing intersection between given repository and all repositories related to it.
-- Similarities are computed and cached using [Lua Script](https://github.com/sheerun/githubsocial/blob/master/app/services/redis_recommender.rb#L2) executed directly in Redis instance.
-- Performing computations on sets of integers instead set of strings, gaining on [Redis optimizations](http://redis.io/topics/memory-optimization). Redis is used in 32bit mode and with increased shared integer pool to improve memory usage.
-- For repositories with thousand stars, a representative sample of 100-5000 users is taken for computing live recommendations in <0.1s. Full recommendations are computed in background worker to improve users' experience.
+- Instead of computing intersection of stars between given repository and all repositories related to it, similarities are computed massively using [zunionstore](https://github.com/sheerun/githubsocial/blob/master/app/services/redis_recommender.rb#L13) Redis command.
+- Similarities are computed and cached using Lua script executed directly in Redis instance.
+- For repositories with thousand stars, a representative sample of 100-5000 users is taken.
+- Employ [optimizations](http://redis.io/topics/memory-optimization) by  computations on sets of integers instead set of strings.
+- Redis is used in 32bit mode and with increased shared integer pool to improve memory usage.
+- The "popularity penalty factor" is used for discovering less popular repositories. The penalty factor can be provided by user.
 
-Such changes:
+## Performance
 
-- allow for real-time recommendations, even with constantly refreshing database data
-- reduce memory footprint needed to 850 MB per redis instance (only one is needed)
-
-## Want to know more?
-
-Ping me on [twitter](http://twitter.com/sheerun), or read the source.
+Algorithm is able to analyse hundreds of thousands of stars under 0.5s while maintaining memory usage less than 1GB on GitHub dataset.
 
 ## Requirements
 

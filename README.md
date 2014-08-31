@@ -32,12 +32,12 @@ We use similar approach to [predictor](https://github.com/Pathgather/predictor),
 The similarity formula is as follows:
 
 ```
-             |A| ∩ |B|
-S(A, B) = --------------
-           |A| + P * |B|
+            |U(A)| ∩ |U(B)|
+S(A, B) = -------------------
+          |U(A)| + P * |U(B)|
 ```
 
-Where `A` is set of users liking subject repository, `B` is set of users liking related repository, and `P` is a popularity penalty factor provided by user.
+Where `A` is subject repository, `B` is related repository, `U(x)` is set of users starring `x` repository, and `P` is a "popularity penalty factor" provided by user.
 
 ## Performance
 
